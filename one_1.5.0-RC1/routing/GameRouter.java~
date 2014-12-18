@@ -10,14 +10,14 @@ import core.Settings;
  * Epidemic message router with drop-oldest buffer and only single transferring
  * connections at a time.
  */
-public class GameRouter extends ActiveRouter {
+public class EpidemicRouter extends ActiveRouter {
 	
 	/**
 	 * Constructor. Creates a new message router based on the settings in
 	 * the given Settings object.
 	 * @param s The settings object
 	 */
-	public GameRouter(Settings s) {
+	public EpidemicRouter(Settings s) {
 		super(s);
 		//TODO: read&use epidemic router specific settings (if any)
 	}
@@ -26,7 +26,7 @@ public class GameRouter extends ActiveRouter {
 	 * Copy constructor.
 	 * @param r The router prototype where setting values are copied from
 	 */
-	protected GameRouter(GameRouter r) {
+	protected EpidemicRouter(EpidemicRouter r) {
 		super(r);
 		//TODO: copy epidemic settings here (if any)
 	}
@@ -49,8 +49,8 @@ public class GameRouter extends ActiveRouter {
 	
 	
 	@Override
-	public GameRouter replicate() {
-		return new GameRouter(this);
+	public EpidemicRouter replicate() {
+		return new EpidemicRouter(this);
 	}
 
 }
