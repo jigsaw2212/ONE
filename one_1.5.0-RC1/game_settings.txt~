@@ -7,8 +7,7 @@ Scenario.name = game_scenario
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 # 43200s == 12h
-Scenario.endTime = 43200
-
+Scenario.endTime = 1600
 
 ## Interface-specific settings:
 # type : which interface class the interface belongs to
@@ -53,7 +52,7 @@ Scenario.nrofHostGroups = 4
 
 # Common settings for all groups
 Group.movementModel = ShortestPathMapBasedMovement
-Group.router = EpidemicRouter
+Group.router = ProphetRouter
 Group.bufferSize = 5M
 Group.waitTime = 0, 120
 # All nodes have the highspeed interface
@@ -119,7 +118,7 @@ MovementModel.rngSeed = 1
 # World's size for Movement Models without implicit size (width, height; meters)
 MovementModel.worldSize = 4500, 3400
 # How long time to move hosts in the world before real simulation
-MovementModel.warmup = 1000
+MovementModel.warmup = 0
 
 ## Map based movement -movement model specific settings
 MapBasedMovement.nrofMapFiles = 4
@@ -132,13 +131,15 @@ MapBasedMovement.mapFile4 = data/shops.wkt
 ## Reports - all report names have to be valid report classes
 
 # how many reports to load
-Report.nrofReports = 1
+Report.nrofReports = 3
 # length of the warm up period (simulated seconds)
 Report.warmup = 0
 # default directory of reports (can be overridden per Report with output setting)
-Report.reportDir = reports/
+Report.reportDir = reports/game
 # Report classes to load
 Report.report1 = MessageStatsReport
+Report.report2 = TotalEncountersReport
+Report.report3 = UniqueEncountersReport
 
 ## Default settings for some routers settings
 ProphetRouter.secondsInTimeUnit = 30

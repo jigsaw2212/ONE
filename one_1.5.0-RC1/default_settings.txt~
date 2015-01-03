@@ -17,7 +17,7 @@ Scenario.endTime = 43200
 # transmitSpeed : transmit speed of the interface (bytes per second) 
 # transmitRange : range of the interface (meters)
 
-"Bluetooth" interface for all nodes
+# "Bluetooth" interface for all nodes
 btInterface.type = SimpleBroadcastInterface
 # Transmit speed of 2 Mbps = 250kBps
 btInterface.transmitSpeed = 250k
@@ -53,7 +53,7 @@ Scenario.nrofHostGroups = 6
 
 # Common settings for all groups
 Group.movementModel = ShortestPathMapBasedMovement
-Group.router = EpidemicRouter
+Group.router = ProphetRouter
 Group.bufferSize = 5M
 Group.waitTime = 0, 120
 # All nodes have the bluetooth interface
