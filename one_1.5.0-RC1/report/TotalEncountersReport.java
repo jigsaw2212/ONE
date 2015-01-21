@@ -57,8 +57,8 @@ public class TotalEncountersReport extends Report implements ConnectionListener,
 		}
 		
 		// Print distribution
-		for (int i=0; i<distribution.length; i++) {
-			write(i + " " + distribution[i]);
+		for (int i=0; i<encounters.length; i++) {
+			write(i + " " + encounters[i]);
 		}
 		
 		super.done();

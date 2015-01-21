@@ -3,7 +3,7 @@
  * Released under GPLv3. See LICENSE.txt for details. 
  */
 package routing;
-
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -21,6 +21,8 @@ import core.DTNHost;
 import core.Message;
 import core.Settings;
 import core.SimClock;
+
+
 
 /**
  * Implementation of Game router as described in 
@@ -58,6 +60,10 @@ public class GameRouter extends ActiveRouter {
 	private Map<DTNHost, Double> preds;
 	/** last delivery predictability update (sim)time */
 	private double lastAgeUpdate;
+
+	private static int[] encounters;
+
+	
 	
 	/**
 	 * Constructor. Creates a new message router based on the settings in
@@ -66,6 +72,7 @@ public class GameRouter extends ActiveRouter {
 	 */
 	public GameRouter(Settings s) {
 		super(s);
+		System.out.println("GameRouter");
 		Settings GameSettings = new Settings(Game_NS);
 		secondsInTimeUnit = GameSettings.getInt(SECONDS_IN_UNIT_S);
 		if (GameSettings.contains(BETA_S)) {
@@ -76,6 +83,7 @@ public class GameRouter extends ActiveRouter {
 		}
 
 		initPreds();
+		
 	}
 
 	/**
@@ -87,6 +95,7 @@ public class GameRouter extends ActiveRouter {
 		this.secondsInTimeUnit = r.secondsInTimeUnit;
 		this.beta = r.beta;
 		initPreds();
+		
 	}
 	
 	/**
@@ -96,17 +105,34 @@ public class GameRouter extends ActiveRouter {
 		this.preds = new HashMap<DTNHost, Double>();
 	}
 
+	
+
+
 	@Override
 	public void changedConnection(Connection con) {
 		super.changedConnection(con);
 		
 		if (con.isUp()) {
+			//System.out.println("connection.isup");
 			DTNHost otherHost = con.getOtherNode(getHost());
+			updateEncounters(getHost(),otherHost);
 			updateDeliveryPredFor(otherHost);
 			updateTransitivePreds(otherHost);
 		}
 	}
 	
+	public void updateEncounters(DTNHost host1, DTNHost host2) {
+		System.out.println(Arrays.toString(this.encounters));
+		if (this.encounters == null) {
+			encounters=new int[126];
+		}
+		this.encounters[host1.getAddress()]++;
+		this.encounters[host2.getAddress()]++;
+		System.out.println("fu");
+		System.out.println(Arrays.toString(encounters));
+		
+	}
+
 	/**
 	 * Updates delivery predictions for a host.
 	 * <CODE>P(a,b) = P(a,b)_old + (1 - P(a,b)_old) * P_INIT</CODE>
@@ -133,6 +159,7 @@ public class GameRouter extends ActiveRouter {
 			return 0;
 		}
 	}
+
 	
 	/**
 	 * Updates transitive (A->B->C) delivery predictions.
