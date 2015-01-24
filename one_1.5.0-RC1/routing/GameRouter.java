@@ -61,7 +61,7 @@ public class GameRouter extends ActiveRouter {
 	/** last delivery predictability update (sim)time */
 	private double lastAgeUpdate;
 
-	private static int[] encounters;
+	private static int[][] encounters;
 
 	
 	
@@ -122,14 +122,23 @@ public class GameRouter extends ActiveRouter {
 	}
 	
 	public void updateEncounters(DTNHost host1, DTNHost host2) {
-		System.out.println(Arrays.toString(this.encounters));
+		
 		if (this.encounters == null) {
-			encounters=new int[126];
+			encounters=new int[126][126];	//replace 126 with hosts.size()
 		}
-		this.encounters[host1.getAddress()]++;
-		this.encounters[host2.getAddress()]++;
-		System.out.println("fu");
-		System.out.println(Arrays.toString(encounters));
+		GameRouter othRouter = (GameRouter)host2.getRouter();
+		GameRouter myRouter = (GameRouter)host1.getRouter();
+		if(myRouter!=othRouter)
+		{
+			this.encounters[host1.getAddress()][host2.getAddress()]++;
+		}
+		else
+		{
+			this.encounters[host1.getAddress()][host2.getAddress()]++;
+			this.encounters[host2.getAddress()][host1.getAddress()]++;
+		}
+		//System.out.println("fu");
+		
 		
 	}
 
