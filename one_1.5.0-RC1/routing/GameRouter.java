@@ -4,7 +4,7 @@
  */
 package routing;
 
-import core.*;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -17,6 +17,7 @@ import routing.util.RoutingInfo;
 
 import util.Tuple;
 
+import core.*;
 import core.Connection;
 import core.DTNHost;
 import core.Message;
@@ -60,6 +61,8 @@ public class GameRouter extends ActiveRouter {
 	/** last delivery predictability update (sim)time */
 	private double lastAgeUpdate;
 	
+	private static int[][] encounters;
+
 	/**
 	 * Constructor. Creates a new message router based on the settings in
 	 * the given Settings object.
@@ -103,11 +106,34 @@ public class GameRouter extends ActiveRouter {
 		
 		if (con.isUp()) {
 			DTNHost otherHost = con.getOtherNode(getHost());
+			updateEncounters(getHost(),otherHost);
 			updateDeliveryPredFor(otherHost);
 			updateTransitivePreds(otherHost);
 		}
 	}
 	
+	public void updateEncounters(DTNHost host1, DTNHost host2) {
+		
+		if (this.encounters == null) {
+			encounters=new int[126][126];	//replace 126 with hosts.size()
+		}
+		GameRouter othRouter = (GameRouter)host2.getRouter();
+		GameRouter myRouter = (GameRouter)host1.getRouter();
+		if(myRouter!=othRouter)
+		{
+			this.encounters[host1.getAddress()][host2.getAddress()]++;
+		}
+		else
+		{
+			this.encounters[host1.getAddress()][host2.getAddress()]++;
+			this.encounters[host2.getAddress()][host1.getAddress()]++;
+		}
+		System.out.println(Arrays.toString(encounters[0]));
+		//System.out.println("fu");
+		
+		
+	}
+
 	/**
 	 * Updates delivery predictions for a host.
 	 * <CODE>P(a,b) = P(a,b)_old + (1 - P(a,b)_old) * P_INIT</CODE>
