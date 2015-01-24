@@ -128,10 +128,13 @@ public class GameRouter extends ActiveRouter {
 			this.encounters[host1.getAddress()][host2.getAddress()]++;
 			this.encounters[host2.getAddress()][host1.getAddress()]++;
 		}
-		System.out.println(Arrays.toString(encounters[0]));
+		//System.out.println(Arrays.toString(encounters[0]));
 		//System.out.println("fu");
-		
-		
+			
+	}
+
+	public int getEncounter(DTNHost host1,DTNHost host2){
+		return this.encounters[host1.getAddress()][host2.getAddress()];
 	}
 
 	/**
@@ -265,9 +268,9 @@ public class GameRouter extends ActiveRouter {
 					// the other node has higher probability of delivery
 					messages.add(new Tuple<Message, Connection>(m,con));
 				}*/
-				System.out.println("poop1");
-				if(getDistFor(dest,other)<getDistFor(dest,me)){
-					System.out.println("poop2");
+				//System.out.println("poop1");
+				if((getEncounter(dest,other)/getDistFor(dest,other))<(getEncounter(dest,me)/getDistFor(dest,me))){
+				//	System.out.println("poop2");
 					messages.add(new Tuple<Message, Connection>(m,con));	
 				}
 			}			
@@ -335,7 +338,7 @@ private double getDistFor(DTNHost dest,DTNHost nextHost)
 	double dist = Math.pow((a*a+b*b),0.5); 
 	if(dist<0) dist = -dist;
 	
-	System.out.println(dist);
+	//System.out.println(dist);
 	return dist;
 }
 
