@@ -4,6 +4,7 @@
  */
 package routing;
 
+import core.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -220,6 +221,8 @@ public class GameRouter extends ActiveRouter {
 		/* for all connected hosts collect all messages that have a higher
 		   probability of delivery by the other host */
 		for (Connection con : getConnections()) {
+
+			DTNHost me = getHost();
 			DTNHost other = con.getOtherNode(getHost());
 			GameRouter othRouter = (GameRouter)other.getRouter();
 			
@@ -231,9 +234,15 @@ public class GameRouter extends ActiveRouter {
 				if (othRouter.hasMessage(m.getId())) {
 					continue; // skip messages that the other one has
 				}
-				if (othRouter.getPredFor(m.getTo()) > getPredFor(m.getTo())) {
+				DTNHost dest = m.getTo();
+				/*if (othRouter.getDistFor(m.getTo()) > getDistFor(m.getTo())) {
 					// the other node has higher probability of delivery
 					messages.add(new Tuple<Message, Connection>(m,con));
+				}*/
+				System.out.println("poop1");
+				if(getDistFor(dest,other)<getDistFor(dest,me)){
+					System.out.println("poop2");
+					messages.add(new Tuple<Message, Connection>(m,con));	
 				}
 			}			
 		}
@@ -279,6 +288,31 @@ public class GameRouter extends ActiveRouter {
 			}
 		}
 	}
+
+
+private double getDistFor(DTNHost dest,DTNHost nextHost)
+{
+	Coord destLoc = dest.getLocation();
+	Coord nextHostLoc = nextHost.getLocation();
+	double x1 = nextHostLoc.getX();
+	double y1 = nextHostLoc.getY();
+	double x2 = destLoc.getX();
+	double y2 = destLoc.getY();
+	//find line constants
+	//System.out.println(x1+" "+y1);
+
+
+	double a = y1 - y2;
+	double b = x2 - x1;
+	double c = y2*x1 - y1*x2;
+	
+	double dist = Math.pow((a*a+b*b),0.5); 
+	if(dist<0) dist = -dist;
+	
+	System.out.println(dist);
+	return dist;
+}
+
 	
 	@Override
 	public RoutingInfo getRoutingInfo() {
