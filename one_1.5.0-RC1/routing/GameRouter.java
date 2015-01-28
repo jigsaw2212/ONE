@@ -63,6 +63,8 @@ public class GameRouter extends ActiveRouter {
 	
 	private static int[][] encounters;
 
+	private static int[] sum;
+
 	/**
 	 * Constructor. Creates a new message router based on the settings in
 	 * the given Settings object.
@@ -115,20 +117,26 @@ public class GameRouter extends ActiveRouter {
 	public void updateEncounters(DTNHost host1, DTNHost host2) {
 		//each message has different destination and we'll need encounters of every node with the destination(which is changing with each message) in same time instance, hence we've decided to use a 2D array
 		if (this.encounters == null) {
-			encounters=new int[126][126];	//replace 126 with hosts.size()
+			this.encounters=new int[126][126];	//replace 126 with hosts.size()
+		}
+		if(this.sum == null){
+			this.sum=new int[126];
 		}
 		GameRouter othRouter = (GameRouter)host2.getRouter();
 		GameRouter myRouter = (GameRouter)host1.getRouter();
 		if(myRouter!=othRouter)
 		{
 			this.encounters[host1.getAddress()][host2.getAddress()]++;
+			this.sum[host1.getAddress()]++;
 		}
 		else
 		{
 			this.encounters[host1.getAddress()][host2.getAddress()]++;
 			this.encounters[host2.getAddress()][host1.getAddress()]++;
+			this.sum[host1.getAddress()]++;
+			this.sum[host2.getAddress()]++;
 		}
-		//System.out.println(Arrays.toString(encounters[0]));
+		//System.out.println(Arrays.toString(sum));
 		//System.out.println("fu");
 			
 	}
@@ -137,6 +145,9 @@ public class GameRouter extends ActiveRouter {
 		return this.encounters[host1.getAddress()][host2.getAddress()];
 	}
 
+	public int getSum(DTNHost host){
+		return this.sum[host.getAddress()];
+	}
 	/**
 	 * Updates delivery predictions for a host.
 	 * <CODE>P(a,b) = P(a,b)_old + (1 - P(a,b)_old) * P_INIT</CODE>
@@ -269,7 +280,17 @@ public class GameRouter extends ActiveRouter {
 					messages.add(new Tuple<Message, Connection>(m,con));
 				}*/
 				//System.out.println("poop1");
-				if((getEncounter(dest,other)/getDistFor(dest,other))<(getEncounter(dest,me)/getDistFor(dest,me))){
+				double alphaOther;
+				double alphaMe;
+				if(getSum(dest)==0)
+					alphaOther=0;
+				else
+					alphaOther=getEncounter(dest,other)/getSum(dest);
+				if(getSum(dest)==0)
+					alphaMe=0;
+				else
+					alphaMe=getEncounter(dest,me)/getSum(dest);
+				if((alphaOther/getDistFor(dest,other))<(alphaMe/getDistFor(dest,me))){
 				//	System.out.println("poop2");
 					messages.add(new Tuple<Message, Connection>(m,con));	
 				}
