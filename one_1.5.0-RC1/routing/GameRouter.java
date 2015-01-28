@@ -113,7 +113,7 @@ public class GameRouter extends ActiveRouter {
 	}
 	
 	public void updateEncounters(DTNHost host1, DTNHost host2) {
-		
+		//each message has different destination and we'll need encounters of every node with the destination(which is changing with each message) in same time instance, hence we've decided to use a 2D array
 		if (this.encounters == null) {
 			encounters=new int[126][126];	//replace 126 with hosts.size()
 		}
