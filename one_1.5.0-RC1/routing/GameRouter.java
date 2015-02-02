@@ -17,12 +17,14 @@ import routing.util.RoutingInfo;
 
 import util.Tuple;
 
-import core.*;
 import core.Connection;
 import core.DTNHost;
 import core.Message;
 import core.Settings;
 import core.SimClock;
+import core.World;
+import core.SimScenario;
+import core.Coord;
 
 /**
  * Implementation of Game router as described in 
@@ -60,10 +62,18 @@ public class GameRouter extends ActiveRouter {
 	private Map<DTNHost, Double> preds;
 	/** last delivery predictability update (sim)time */
 	private double lastAgeUpdate;
+
+	/** The World where all actors of the simulator are */
+	protected World world;
+
+	/** Scenario of the current simulation */
+	protected SimScenario scen;
 	
 	private static int[][] encounters;
 
 	private static int[] sum;
+
+	private List<DTNHost> nodes;
 
 	/**
 	 * Constructor. Creates a new message router based on the settings in
@@ -80,7 +90,8 @@ public class GameRouter extends ActiveRouter {
 		else {
 			beta = DEFAULT_BETA;
 		}
-
+		initModel();
+		//initNodes();
 		initPreds();
 	}
 
@@ -92,7 +103,9 @@ public class GameRouter extends ActiveRouter {
 		super(r);
 		this.secondsInTimeUnit = r.secondsInTimeUnit;
 		this.beta = r.beta;
+		initModel();
 		initPreds();
+		//initNodes();
 	}
 	
 	/**
@@ -100,6 +113,16 @@ public class GameRouter extends ActiveRouter {
 	 */
 	private void initPreds() {
 		this.preds = new HashMap<DTNHost, Double>();
+	}
+
+	private void initModel() {
+		this.scen = SimScenario.getInstance();
+		this.world = this.scen.getWorld();
+	}
+
+	private void initNodes()
+	{
+		this.nodes=getNodes();
 	}
 
 	@Override
@@ -148,6 +171,13 @@ public class GameRouter extends ActiveRouter {
 	public int getSum(DTNHost host){
 		return this.sum[host.getAddress()];
 	}
+
+	public List<DTNHost> getNodes(){
+		
+		return this.world.getHosts();
+	}
+
+	
 	/**
 	 * Updates delivery predictions for a host.
 	 * <CODE>P(a,b) = P(a,b)_old + (1 - P(a,b)_old) * P_INIT</CODE>
@@ -290,6 +320,7 @@ public class GameRouter extends ActiveRouter {
 					alphaMe=0;
 				else
 					alphaMe=getEncounter(dest,me)/getSum(dest);
+				//System.out.println(this.nodes[0]);
 				if((alphaOther/getDistFor(dest,other))<(alphaMe/getDistFor(dest,me))){
 				//	System.out.println("poop2");
 					messages.add(new Tuple<Message, Connection>(m,con));	
