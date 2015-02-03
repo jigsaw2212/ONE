@@ -141,13 +141,25 @@ public class GameRouter extends ActiveRouter {
 			
 	}
 
+	/**
+	 * Returns the current encounter (E) value for a host
+	 * @param host1 The host to look the E for
+	 * @param host2 The node with respect to which we have to return the encounters
+	 * @return the current E value
+	 */
 	public int getEncounter(DTNHost host1,DTNHost host2){
 		return this.encounters[host1.getAddress()][host2.getAddress()];
 	}
 
+	/**
+	 * Returns the current sum (S) value for a host
+	 * @param host The host to look the S for
+	 * @return the current S value
+	 */
 	public int getSum(DTNHost host){
 		return this.sum[host.getAddress()];
 	}
+	
 	/**
 	 * Updates delivery predictions for a host.
 	 * <CODE>P(a,b) = P(a,b)_old + (1 - P(a,b)_old) * P_INIT</CODE>
