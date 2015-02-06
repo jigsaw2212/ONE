@@ -61,8 +61,10 @@ public class GameRouter extends ActiveRouter {
 	/** last delivery predictability update (sim)time */
 	private double lastAgeUpdate;
 	
+	/** number of encounters of every node with every other node*/
 	private static int[][] encounters;
 
+	/** sum of total encounters by every node*/
 	private static int[] sum;
 
 	/**
@@ -114,6 +116,12 @@ public class GameRouter extends ActiveRouter {
 		}
 	}
 	
+
+	/**
+	 * Updates the value of encounters when two nodes come in contact with each other
+	 * @param host1 first node
+	 * @param host2 second node
+	 */
 	public void updateEncounters(DTNHost host1, DTNHost host2) {
 		//each message has different destination and we'll need encounters of every node with the destination(which is changing with each message) in same time instance, hence we've decided to use a 2D array
 		if (this.encounters == null) {
@@ -136,8 +144,6 @@ public class GameRouter extends ActiveRouter {
 			this.sum[host1.getAddress()]++;
 			this.sum[host2.getAddress()]++;
 		}
-		//System.out.println(Arrays.toString(sum));
-		//System.out.println("fu");
 			
 	}
 
@@ -303,7 +309,6 @@ public class GameRouter extends ActiveRouter {
 				else
 					alphaMe=getEncounter(dest,me)/getSum(dest);
 				if((alphaOther/getDistFor(dest,other))<(alphaMe/getDistFor(dest,me))){
-				//	System.out.println("poop2");
 					messages.add(new Tuple<Message, Connection>(m,con));	
 				}
 			}			
@@ -351,7 +356,12 @@ public class GameRouter extends ActiveRouter {
 		}
 	}
 
-
+/**
+* Returns the current distance between dest node and the nextHost node
+* @param dest The destination node 
+* @param nextHost The node from which we want to calculate the diatance from
+* @return the current distance
+*/
 private double getDistFor(DTNHost dest,DTNHost nextHost)
 {
 	Coord destLoc = dest.getLocation();
@@ -360,18 +370,11 @@ private double getDistFor(DTNHost dest,DTNHost nextHost)
 	double y1 = nextHostLoc.getY();
 	double x2 = destLoc.getX();
 	double y2 = destLoc.getY();
-	//find line constants
-	//System.out.println(x1+" "+y1);
-
-
 	double a = y1 - y2;
 	double b = x2 - x1;
 	double c = y2*x1 - y1*x2;
-	
 	double dist = Math.pow((a*a+b*b),0.5); 
 	if(dist<0) dist = -dist;
-	
-	//System.out.println(dist);
 	return dist;
 }
 
