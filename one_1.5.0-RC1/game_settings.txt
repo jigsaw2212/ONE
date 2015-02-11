@@ -7,7 +7,7 @@ Scenario.name = game_scenario
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 # 43200s == 12h
-Scenario.endTime = 432
+Scenario.endTime = 4320
 
 
 ## Interface-specific settings:
@@ -159,7 +159,6 @@ Report.report2 = TotalEncountersReport
 
 ## Default settings for some routers settings
 ProphetRouter.secondsInTimeUnit = 30
-GameRouter.secondsInTimeUnit = 30
 SprayAndWaitRouter.nrofCopies = 6
 SprayAndWaitRouter.binaryMode = true
 
