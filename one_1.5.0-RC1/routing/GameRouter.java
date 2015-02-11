@@ -209,7 +209,7 @@ public class GameRouter extends ActiveRouter {
 			return null;
 		}
 		
-		// sort the message-connection tuples
+		// sort the message-connection tuples (i dont's see the need to sort:-Kunal)
 		//Collections.sort(messages, new TupleComparator());
 		return tryMessagesForConnected(messages);	// try to send messages
 	}
@@ -223,6 +223,7 @@ private double getsumEncountersDist(DTNHost dest)
 	}
 	return sumDist;
 }
+
 /**	
 * Returns the current distance between dest node and the nextHost node
 * @param dest The destination node 
