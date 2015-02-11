@@ -35,7 +35,7 @@ public class GameRouter extends ActiveRouter {
 	private static int[][] encounters;
 
 	/** sum of total encounters by every node*/
-	private static int[] sum;
+	private static Map<DTNHost, Integer> sum;
 
 	/**
 	 * Constructor. Creates a new message router based on the settings in
@@ -73,24 +73,37 @@ public class GameRouter extends ActiveRouter {
 	public void updateEncounters(DTNHost host1, DTNHost host2) {
 		//each message has different destination and we'll need encounters of every node with the destination(which is changing with each message) in same time instance, hence we've decided to use a 2D array
 		if (this.encounters == null) {
-			this.encounters=new int[126][126];	//replace 126 with hosts.size()
+			this.encounters=new int[126][126]; //TODO:replace 126 by hosts.size
 		}
 		if(this.sum == null){
-			this.sum=new int[126];
+			this.sum=new HashMap<DTNHost, Integer>();
 		}
 		GameRouter othRouter = (GameRouter)host2.getRouter();
 		GameRouter myRouter = (GameRouter)host1.getRouter();
+
+		//if sum does not contain host1 , put host1 in sum and initialise by 0
+		if(!this.sum.containsKey(host1))
+		{
+			sum.put(host1,0);
+		}
+		//if sum does not contain host1 , put host1 in sum and initialise by 0
+		if(!this.sum.containsKey(host2))
+		{
+			sum.put(host2,0);
+		}
 		if(myRouter!=othRouter)
 		{
 			this.encounters[host1.getAddress()][host2.getAddress()]++;
-			this.sum[host1.getAddress()]++;
+
+			//increase the value of sum of host1 by 1 
+			this.sum.put(host1,this.sum.get(host1)+1);
 		}
 		else
 		{
 			this.encounters[host1.getAddress()][host2.getAddress()]++;
 			this.encounters[host2.getAddress()][host1.getAddress()]++;
-			this.sum[host1.getAddress()]++;
-			this.sum[host2.getAddress()]++;
+			this.sum.put(host1,this.sum.get(host1)+1);
+			this.sum.put(host1,this.sum.get(host2)+1);
 		}
 			
 	}
@@ -111,7 +124,9 @@ public class GameRouter extends ActiveRouter {
 	 * @return the current S value
 	 */
 	public int getSum(DTNHost host){
-		return this.sum[host.getAddress()];
+		if(sum.containsKey(host))
+			return this.sum.get(host);
+		return 0;
 	}
 	
 	@Override
@@ -140,7 +155,7 @@ public class GameRouter extends ActiveRouter {
 		Collection<Message> msgCollection = getMessageCollection();
 		
 		/* for all connected hosts collect all messages that have a higher
-		   probability of delivery by the other host */
+		   gamma(alpha/beta) of delivery by the other host */
 		for (Connection con : getConnections()) {
 
 			DTNHost me = getHost();
@@ -160,13 +175,20 @@ public class GameRouter extends ActiveRouter {
 					// the other node has higher probability of delivery
 					messages.add(new Tuple<Message, Connection>(m,con));
 				}*/
-				//System.out.println("poop1");
+
+				//alpha of otherRouter
 				double alphaOther;
+
+				//alpha of sourceRouter
 				double alphaMe;
+
+				//if the sum of encounters of all other nodes w.r.t destination is 0,
+				//then initialise alphaOther to 0 (prevents divide by zero error)
 				if(getSum(dest)==0)
 					alphaOther=0;
 				else
 					alphaOther=getEncounter(dest,other)/getSum(dest);
+
 				if(getSum(dest)==0)
 					alphaMe=0;
 				else
