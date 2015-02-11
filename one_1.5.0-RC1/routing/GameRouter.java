@@ -103,9 +103,10 @@ public class GameRouter extends ActiveRouter {
 			this.encounters[host1.getAddress()][host2.getAddress()]++;
 			this.encounters[host2.getAddress()][host1.getAddress()]++;
 			this.sumEncounters.put(host1,this.sumEncounters.get(host1)+1);
-			this.sumEncounters.put(host1,this.sumEncounters.get(host2)+1);
+			this.sumEncounters.put(host2,this.sumEncounters.get(host2)+1);
 		}
-			
+		//System.out.println(host1.getAddress()+ " " + sumEncounters.get(host1));
+		//System.out.println(host2.getAddress()+ " " + sumEncounters.get(host2));
 	}
 
 	/**
@@ -125,8 +126,12 @@ public class GameRouter extends ActiveRouter {
 	 */
 	public int getsumEncounters(DTNHost host){
 		if(sumEncounters.containsKey(host))
+		{
+			//System.out.println("poop:"+host.getAddress()+"="+this.sumEncounters.get(host));
 			return this.sumEncounters.get(host);
-		return 0;
+		}
+		else
+			return 0;
 	}
 	
 	@Override
@@ -185,20 +190,26 @@ public class GameRouter extends ActiveRouter {
 				//if the sumEncounters of encounters of all other nodes w.r.t destination is 0,
 				//then initialise alphaOther to 0 (prevents divide by zero error)
 				if(getsumEncounters(dest)==0)
+				{
+					//System.out.println();
 					alphaOther=0;
-				else
-					alphaOther=getEncounter(dest,other)/getsumEncounters(dest);
-				if(getsumEncounters(dest)==0)
 					alphaMe=0;
+				}
 				else
+				{
+					alphaOther=getEncounter(dest,other)/getsumEncounters(dest);
 					alphaMe=getEncounter(dest,me)/getsumEncounters(dest);
-
+				}
+				
 				//beta for otherRouter
-				betaOther=getDistFor(dest,other)/getsumEncountersDist(dest);
+				betaOther=getDistFor(dest,other)/getsumDist(dest);
 				//beta for sourceRouter
-				betaMe=getDistFor(me,other)/getsumEncountersDist(dest);
+				betaMe=getDistFor(me,other)/getsumDist(dest);
 
-				//the other node has higher has higher gamma
+				//System.out.println("getEncMe="+getEncounter(dest,me)+" "+"getsumEncounters="+getsumEncounters(dest));
+				//System.out.println(betaOther);
+				//System.out.println();
+				//the other node has higher gamma
 				if((alphaOther/betaOther)<(alphaMe/betaMe)){
 					messages.add(new Tuple<Message, Connection>(m,con));	
 				}
@@ -209,13 +220,15 @@ public class GameRouter extends ActiveRouter {
 			return null;
 		}
 		
-		// sort the message-connection tuples
+		// sort the message-connection tuples (i dont's see the need to sort:-Kunal)
 		//Collections.sort(messages, new TupleComparator());
 		return tryMessagesForConnected(messages);	// try to send messages
 	}
 
-//Returns the sumEncounters of all the nodes w.r.t dest
-private double getsumEncountersDist(DTNHost dest)
+//NOTE:this is not exactly what we need coz but it will work for now
+//we need sumDist of ALL the nodes but this returns the sum of nodes whose sumEncounters!=0
+//Returns the sum of all the nodes w.r.t dest
+private double getsumDist(DTNHost dest)
 {
 	double sumDist=0;
 	for(DTNHost n:sumEncounters.keySet()){
@@ -223,6 +236,7 @@ private double getsumEncountersDist(DTNHost dest)
 	}
 	return sumDist;
 }
+
 /**	
 * Returns the current distance between dest node and the nextHost node
 * @param dest The destination node 
