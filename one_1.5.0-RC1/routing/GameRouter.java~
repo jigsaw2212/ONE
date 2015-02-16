@@ -36,8 +36,6 @@ public class GameRouter extends ActiveRouter {
 
 	/** sumEncounters of total encounters by every node*/
 	private static Map<DTNHost, Integer> sumEncounters;
-	
-	private static Map<DTNHost, Double> gamma;
 
 	/**
 	 * Constructor. Creates a new message router based on the settings in
@@ -165,7 +163,7 @@ public class GameRouter extends ActiveRouter {
 		   gamma(alpha/beta) of delivery by the other host */
 		for (Connection con : getConnections()) { 
 		
-		this.gamma=new HashMap<DTNHost, Double>();
+		gamma=new HashMap<DTNHost, Double>();
 
 			DTNHost me = getHost();
 			DTNHost other = con.getOtherNode(getHost());
