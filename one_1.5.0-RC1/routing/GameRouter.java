@@ -161,11 +161,13 @@ public class GameRouter extends ActiveRouter {
 	
 		Collection<Message> msgCollection = getMessageCollection();
 		
+		this.gamma=new HashMap<DTNHost, Double>();
+		
 		/* for all connected hosts collect all messages that have a higher
 		   gamma(alpha/beta) of delivery by the other host */
 		for (Connection con : getConnections()) { 
 		
-		this.gamma=new HashMap<DTNHost, Double>();
+		
 
 			DTNHost me = getHost();
 			DTNHost other = con.getOtherNode(getHost());
