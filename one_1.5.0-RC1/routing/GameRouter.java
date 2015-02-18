@@ -225,13 +225,11 @@ public class GameRouter extends ActiveRouter {
 		return tryMessagesForConnected(messages);	// try to send messages
 	}
 
-//NOTE:this is not exactly what we need but it will work for now
-//we need sumDist of ALL the nodes but this returns the sum of nodes whose sumEncounters!=0
 //Returns the sum of all the nodes w.r.t dest
 private double getsumDist(DTNHost dest)
 {
 	double sumDist=0;
-	for(DTNHost n:sumEncounters.keySet()){
+	for(DTNHost n:dest.getHosts()){
 		sumDist+=getDistFor(n,dest);
 	}
 	return sumDist;

@@ -23,6 +23,8 @@ public class DTNHost implements Comparable<DTNHost> {
 	private Coord location; 	// where is the host
 	private Coord destination;	// where is it going
 
+	protected List<DTNHost> hosts;
+
 	private MessageRouter router;
 	private MovementModel movement;
 	private Path path;
@@ -532,6 +534,14 @@ public class DTNHost implements Comparable<DTNHost> {
 	 */
 	public int compareTo(DTNHost h) {
 		return this.getAddress() - h.getAddress();
+	}
+
+	public void set_Host(List<DTNHost> hosts){
+		this.hosts=hosts;
+	}
+
+	public List<DTNHost> getHosts(){
+		return this.hosts;
 	}
 
 }
