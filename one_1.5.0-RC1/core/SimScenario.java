@@ -164,6 +164,11 @@ public class SimScenario implements Serializable {
 		this.world = new World(hosts, worldSizeX, worldSizeY, updateInterval, 
 				updateListeners, simulateConnections, 
 				eqHandler.getEventQueues());
+
+		for(DTNHost host : hosts)
+		{
+			host.set_Host(hosts);
+		}
 	}
 	
 	/**
