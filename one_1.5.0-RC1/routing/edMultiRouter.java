@@ -170,9 +170,8 @@ public class edMultiRouter extends ActiveRouter {
 
 			double threshold=1;
 
+			/*
 			for(DTNHost node : getHost().getHosts()){
-
-				
 
 				//alpha and beta of otherRouter
 				double alphaNode,betaNode,gammaNode;
@@ -197,6 +196,7 @@ public class edMultiRouter extends ActiveRouter {
 				if(gammaNode>threshold)
 					bestGammaWorld.put(node,gammaNode);
 			}
+			*/
 
 			for (Connection con : getConnections()){
 
@@ -228,11 +228,11 @@ public class edMultiRouter extends ActiveRouter {
 			}
 
 			//intersection 
-			Map<DTNHost, Double> intersection = new HashMap<DTNHost, Double>(bestGammaLocal);
-			intersection.keySet().retainAll(bestGammaWorld.keySet());
+			//Map<DTNHost, Double> intersection = new HashMap<DTNHost, Double>(bestGammaLocal);
+			//intersection.keySet().retainAll(bestGammaWorld.keySet());
 
 			//if intersection is not empty
-			if(!intersection.isEmpty()){
+			if(!bestGammaLocal.isEmpty()){
 				/*
 				Connection c= new Connection(getHost(),getHost().getInterface(),maxGamma.getKey(),maxGamma.getKey().getInterface());
 				edMultiRouter othRouter = (edMultiRouter)other.getRouter();
@@ -252,7 +252,7 @@ public class edMultiRouter extends ActiveRouter {
 					if(othRouter.hasMessage(m.getId())){
 						continue;
 					}
-					if(intersection.containsKey(other))
+					if(bestGammaLocal.containsKey(other))
 					{
 						messages.add(new Tuple<Message, Connection>(m,con));	
 					}
