@@ -7,7 +7,7 @@ Scenario.name = ed_multi_scenario
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 # 43200s == 12h
-Scenario.endTime = 4330
+Scenario.endTime = 10000
 
 
 ## Interface-specific settings:
@@ -54,8 +54,8 @@ Scenario.nrofHostGroups = 1
 # Common settings for all groups
 Group.movementModel = ShortestPathMapBasedMovement
 Group.router = edMultiRouter
-Group.bufferSize = 15M
-Group.waitTime = 0,5
+Group.bufferSize = 20M
+Group.waitTime = 0,220
 # All nodes have the highSpeed interface
 Group.nrofInterfaces = 1
 Group.interface1 = btInterface

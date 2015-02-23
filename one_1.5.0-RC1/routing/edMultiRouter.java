@@ -206,22 +206,29 @@ public class edMultiRouter extends ActiveRouter {
 				
 				//alpha and beta of otherRouter
 				double alphaOther,betaOther,gammaOther;
+				//alpha and beta of MeRouter
+				double alphaMe,betaMe,gammaMe;
 
 				//if the sumEncounters of encounters of all other nodes w.r.t destination is 0,
 				//then initialise alphaOther to 0 (prevents divide by zero error)
 				if(getsumEncounters(dest)==0)
 				{
 					alphaOther=0;
+					alphaMe=0;
 				}
 				else
 				{
 					alphaOther=getEncounter(dest,other)/getsumEncounters(dest);
+					alphaMe=getEncounter(dest,me)/getsumEncounters(me);
 				}
 				
 				//beta for otherRouter
 				betaOther=getDistFor(dest,other)/getsumDist(dest);
+				//beta for MeRouter
+				betaMe=getDistFor(dest,me)/getsumDist(me);
 
 				gammaOther=alphaOther/betaOther;
+				gammaMe=alphaMe/betaMe;
 
 				if(gammaOther>threshold)
 					bestGammaLocal.put(other,gammaOther);
@@ -259,6 +266,26 @@ public class edMultiRouter extends ActiveRouter {
 				}
 				
 			}
+			/*
+			else{
+
+				for(Connection con : getConnections())
+				{
+					DTNHost other=con.getOtherNode(getHost());
+					edMultiRouter othRouter = (edMultiRouter)other.getRouter();
+					if(othRouter.isTransferring()){
+						continue;
+					}
+					if(othRouter.hasMessage(m.getId())){
+						continue;
+					}
+				
+				
+						messages.add(new Tuple<Message, Connection>(m,con));	
+				
+				}
+			}
+			*/
 		}
 		
 		if (messages.size() == 0) {
