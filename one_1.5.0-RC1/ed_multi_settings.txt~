@@ -53,7 +53,7 @@ Scenario.nrofHostGroups = 1
 
 # Common settings for all groups
 Group.movementModel = ShortestPathMapBasedMovement
-Group.router = edMultiRouter
+Group.router = EpidemicRouter
 Group.bufferSize = 25M
 Group.waitTime = 0,5
 # All nodes have the highSpeed interface

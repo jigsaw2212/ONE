@@ -206,7 +206,7 @@ public class edMultiRouter extends ActiveRouter{
 
 			DTNHost dest = m.getTo();
 
-			double threshold;
+			double threshold=0;
 			int count=0;
 	        double gammaTotal=0;
 
