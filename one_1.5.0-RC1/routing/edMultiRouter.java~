@@ -206,7 +206,7 @@ public class edMultiRouter extends ActiveRouter{
 
 			DTNHost dest = m.getTo();
 
-			double threshold=0;
+			double threshold;
 			int count=0;
 	        double gammaTotal=0;
 
@@ -349,7 +349,7 @@ public class edMultiRouter extends ActiveRouter{
 				}  //end of for loop				
 			}
 			
-			
+			//flooding
 	     else 
 			{
 			for(Connection con : getConnections())

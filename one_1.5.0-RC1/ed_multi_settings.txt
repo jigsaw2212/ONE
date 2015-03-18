@@ -7,7 +7,7 @@ Scenario.name = ed_multi_scenario
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 # 43200s == 12h
-Scenario.endTime = 120000
+Scenario.endTime = 100000
 
 
 ## Interface-specific settings:
@@ -26,7 +26,7 @@ btInterface.transmitRange = 20
 # High speed, long range, interface for group 4
 highspeedInterface.type = SimpleBroadcastInterface
 highspeedInterface.transmitSpeed = 10M
-highspeedInterface.transmitRange = 1000
+highspeedInterface.transmitRange = 1500
 
 # Define 6 different node groups
 Scenario.nrofHostGroups = 1
@@ -53,14 +53,14 @@ Scenario.nrofHostGroups = 1
 
 # Common settings for all groups
 Group.movementModel = ShortestPathMapBasedMovement
-Group.router = edMultiRouter
-Group.bufferSize = 25M
-Group.waitTime = 0,5
+Group.router = EpidemicRouter
+Group.bufferSize = 15M
+Group.waitTime = 0,120
 # All nodes have the highSpeed interface
 Group.nrofInterfaces = 1
 Group.interface1 = btInterface
 # Walking speeds
-Group.speed = 3.5, 6.5
+Group.speed = 4.5, 6.5
 # Message TTL of 300 minutes (5 hours)
 Group.msgTtl = 300
 
@@ -76,7 +76,7 @@ Events.nrof = 1
 Events1.class = MessageEventGenerator
 # (following settings are specific for the MessageEventGenerator class)
 # Creation interval in seconds (one new message every 25 to 35 seconds)
-Events1.interval = 5,10
+Events1.interval = 65,75
 # Message sizes (500kB - 1MB)
 Events1.size = 500k,1M
 # range of message source/destination addresses
@@ -106,7 +106,7 @@ MapBasedMovement.mapFile4 = data/shops.wkt
 # how many reports to load
 Report.nrofReports = 2
 # length of the warm up period (simulated seconds)
-Report.warmup = 
+Report.warmup = 1000
 # default directory of reports (can be overridden per Report with output setting)
 Report.reportDir = reports/edMulti
 # Report classes to load

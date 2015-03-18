@@ -280,6 +280,7 @@ public class edMultiRouter extends ActiveRouter{
 				count++;
 			}
 			
+			//calculation of mean threshold
 			threshold=gammaTotal/count;
             
             //to calculate the gamma for the neighbours
@@ -349,7 +350,7 @@ public class edMultiRouter extends ActiveRouter{
 				}  //end of for loop				
 			}
 			
-			
+			//flooding
 	     else 
 			{
 			for(Connection con : getConnections())
