@@ -3,7 +3,7 @@
 #
 
 ## Scenario settings
-Scenario.name = ed_multi_scenario
+Scenario.name = Epidemic_scenario
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 # 43200s == 12h
@@ -53,7 +53,7 @@ Scenario.nrofHostGroups = 1
 
 # Common settings for all groups
 Group.movementModel = ShortestPathMapBasedMovement
-Group.router = ProphetRouter
+Group.router = EpidemicRouter
 Group.bufferSize = 15M
 Group.waitTime = 0,120
 # All nodes have the highSpeed interface
@@ -104,19 +104,27 @@ MapBasedMovement.mapFile4 = data/shops.wkt
 ## Reports - all report names have to be valid report classes
 
 # how many reports to load
-Report.nrofReports = 2
+Report.nrofReports = 6
 # length of the warm up period (simulated seconds)
 Report.warmup = 1000
 # default directory of reports (can be overridden per Report with output setting)
-Report.reportDir = reports/edMulti
+Report.reportDir = reports/KMeans_scenario
+
 # Report classes to load
 Report.report1 = MessageStatsReport
 Report.report2 = TotalEncountersReport
+#Report.report3 = EnergyLevelReport
+Report.report3 = ContactTimesReport
+Report.report4 = DeliveredMessagesReport
+Report.report5 = TotalContactTimeReport
+Report.report6 = InterContactTimesReport
+
 
 
 
 ## Default settings for some routers settings
 ProphetRouter.secondsInTimeUnit = 30
+edMultiRouter.zerothreshold=0.50
 SprayAndWaitRouter.nrofCopies = 6
 SprayAndWaitRouter.binaryMode = true
 

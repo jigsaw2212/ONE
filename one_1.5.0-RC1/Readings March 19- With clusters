@@ -1,0 +1,45 @@
+EdMultiScenario:-
+
+Message stats for scenario ed_multi_scenario (with clusters)
+sim_time: 100000.0000
+created: 1439
+started: 152195
+relayed: 97077
+aborted: 55117
+dropped: 95593
+removed: 0
+delivered: 892
+delivery_prob: 0.6199
+response_prob: 0.0000
+overhead_ratio: 107.8307
+latency_avg: 3326.5835
+latency_med: 2410.3000
+hopcount_avg: 3.0448
+hopcount_med: 2
+buffertime_avg: 1927.8567
+buffertime_med: 1692.6000
+rtt_avg: NaN
+rtt_med: NaN
+
+EpidemicRouter (with clusters)
+Message stats for scenario ed_multi_scenario
+sim_time: 100000.0000
+created: 1439
+started: 191285
+relayed: 130820
+aborted: 60464
+dropped: 129060
+removed: 0
+delivered: 964
+delivery_prob: 0.6699
+response_prob: 0.0000
+overhead_ratio: 134.7054
+latency_avg: 2825.1631
+latency_med: 2308.8000
+hopcount_avg: 3.1307
+hopcount_med: 2
+buffertime_avg: 1686.5378
+buffertime_med: 1397.1000
+rtt_avg: NaN
+rtt_med: NaN
+
