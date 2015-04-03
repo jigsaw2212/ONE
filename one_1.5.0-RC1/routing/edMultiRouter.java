@@ -337,12 +337,7 @@ public class edMultiRouter extends ActiveRouter{
 				}
 				else
 				{
-<<<<<<< HEAD
-					alphaOther=getEncounter(dest,other)/getsumEncounters(dest);
-					alphaMe=getEncounter(dest,me)/getsumEncounters(me);
-=======
 					alphaOther=(double) getEncounter(dest,other)/getsumEncounters(dest);
->>>>>>> Threshold_Calculation
 				}
 				
 				//beta for otherRouter
@@ -350,13 +345,8 @@ public class edMultiRouter extends ActiveRouter{
 				//beta for MeRouter
 				betaMe=getDistFor(dest,me)/getsumDist(me);
 
-<<<<<<< HEAD
-				gammaOther=alphaOther/betaOther;
-				gammaMe=alphaMe/betaMe;
-=======
 				gammaOther=(double)alphaOther/betaOther;
 				//System.out.println(gammaOther);
->>>>>>> Threshold_Calculation
 
 				if(gammaOther>threshold)
 					bestGammaLocal.put(other,gammaOther);
@@ -398,18 +388,10 @@ public class edMultiRouter extends ActiveRouter{
 					}
 				}  //end of for loop				
 			}
-<<<<<<< HEAD
-			/*
-			else{
-
-				for(Connection con : getConnections())
-=======
-			
 			//flooding
 	     else 
 			{
 			for(Connection con : getConnections())
->>>>>>> Threshold_Calculation
 				{
 					DTNHost other=con.getOtherNode(getHost());
 					edMultiRouter othRouter = (edMultiRouter)other.getRouter();
@@ -419,22 +401,11 @@ public class edMultiRouter extends ActiveRouter{
 					if(othRouter.hasMessage(m.getId())){
 						continue;
 					}
-<<<<<<< HEAD
-				
-				
-						messages.add(new Tuple<Message, Connection>(m,con));	
-				
-				}
-			}
-			*/
-=======
-
 						messages.add(new Tuple<Message, Connection>(m,con));	
 				} 
 			
 			
 			}  //end of else 
->>>>>>> Threshold_Calculation
 		}
 		
 		if (messages.size() == 0) {
