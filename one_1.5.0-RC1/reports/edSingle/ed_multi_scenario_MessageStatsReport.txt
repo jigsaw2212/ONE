@@ -1,0 +1,20 @@
+Message stats for scenario ed_multi_scenario
+sim_time: 25000.1000
+created: 359
+started: 319
+relayed: 225
+aborted: 94
+dropped: 100
+removed: 0
+delivered: 225
+delivery_prob: 0.6267
+response_prob: 0.0000
+overhead_ratio: 0.0000
+latency_avg: 4918.1542
+latency_med: 3613.1000
+hopcount_avg: 1.0000
+hopcount_med: 1
+buffertime_avg: 17970.5600
+buffertime_med: 17970.5000
+rtt_avg: NaN
+rtt_med: NaN

@@ -1,0 +1,327 @@
+WITH FLOODING:-
+
+Message stats for scenario ed_multi_scenario (Buffer-25M, Speed-3.5-6.5, Bt-20)
+sim_time: 10000.0000
+created: 1422
+started: 7852
+relayed: 5066
+aborted: 2784
+dropped: 3810
+removed: 0
+delivered: 545
+delivery_prob: 0.3833
+response_prob: 0.0000
+overhead_ratio: 8.2954
+latency_avg: 1990.6020
+latency_med: 1695.6000
+hopcount_avg: 1.4917
+hopcount_med: 1
+buffertime_avg: 3155.8033
+buffertime_med: 3100.8000
+rtt_avg: NaN
+rtt_med: NaN
+
+Message stats for scenario ed_multi_scenario (Buffer-20M, Speed-3.5-6.5, Bt-20)
+sim_time: 10000.0000
+created: 1422
+started: 7774
+relayed: 5000
+aborted: 2772
+dropped: 4246
+removed: 0
+delivered: 497
+delivery_prob: 0.3495
+response_prob: 0.0000
+overhead_ratio: 9.0604
+latency_avg: 1777.7525
+latency_med: 1495.7000
+hopcount_avg: 1.5252
+hopcount_med: 1
+buffertime_avg: 2557.0538
+buffertime_med: 2503.5000
+rtt_avg: NaN
+rtt_med: NaN
+
+Message stats for scenario ed_multi_scenario (Buffer-20M, Speed-1.5-3.5, Bt-20)
+sim_time: 10000.0000
+created: 1422
+started: 6900
+relayed: 5528
+aborted: 1371
+dropped: 4891
+removed: 0
+delivered: 345
+delivery_prob: 0.2426
+response_prob: 0.0000
+overhead_ratio: 15.0232
+latency_avg: 1938.8075
+latency_med: 1763.4000
+hopcount_avg: 1.8261
+hopcount_med: 1
+buffertime_avg: 2322.0081
+buffertime_med: 2184.9000
+rtt_avg: NaN
+rtt_med: NaN
+
+Message stats for scenario ed_multi_scenario (Epidemic Buffer-25M, Speed-3.5-6.5, Bt-20, 66nodes)
+sim_time: 10000.0000
+created: 1422
+started: 7929
+relayed: 5181
+aborted: 2746
+dropped: 3775
+removed: 0
+delivered: 638
+delivery_prob: 0.4487
+response_prob: 0.0000
+overhead_ratio: 7.1207
+latency_avg: 2200.9813
+latency_med: 1819.1000
+hopcount_avg: 1.7210
+hopcount_med: 1
+buffertime_avg: 3179.2451
+buffertime_med: 3120.3000
+rtt_avg: NaN
+rtt_med: NaN
+
+
+Message stats for scenario ed_multi_scenario  (Epidemic Buffer-25M, Speed-3.5-6.5, Bt-20, 96nodes)
+sim_time: 10000.0000
+created: 1430
+started: 16485
+relayed: 10898
+aborted: 5583
+dropped: 8420
+removed: 0
+delivered: 648
+delivery_prob: 0.4531
+response_prob: 0.0000
+overhead_ratio: 15.8179
+latency_avg: 1971.8846
+latency_med: 1606.8000
+hopcount_avg: 2.0324
+hopcount_med: 2
+buffertime_avg: 2461.9762
+buffertime_med: 2377.3000
+rtt_avg: NaN
+rtt_med: NaN
+
+
+Message stats for scenario ed_multi_scenario (With checkstart Buffer-25M, Speed-3.5-6.5, Bt-20, 96nodes)
+sim_time: 10000.0000
+created: 1430
+started: 690
+relayed: 584
+aborted: 106
+dropped: 0
+removed: 0
+delivered: 584
+delivery_prob: 0.4084
+response_prob: 0.0000
+overhead_ratio: 0.0000
+latency_avg: 2760.7866
+latency_med: 2217.1000
+hopcount_avg: 1.0000
+hopcount_med: 1
+buffertime_avg: NaN
+buffertime_med: NaN
+rtt_avg: NaN
+rtt_med: NaN
+
+
+Message stats for scenario ed_multi_scenario (Buffer-25M, Speed-3.5-6.5, Bt-20, 96nodes)
+sim_time: 10000.0000
+created: 1430
+started: 16377
+relayed: 10669
+aborted: 5704
+dropped: 8427
+removed: 0
+delivered: 495
+delivery_prob: 0.3462
+response_prob: 0.0000
+overhead_ratio: 20.5535
+latency_avg: 1572.0111
+latency_med: 1365.7000
+hopcount_avg: 1.6848
+hopcount_med: 1
+buffertime_avg: 2458.8619
+buffertime_med: 2344.0000
+rtt_avg: NaN
+rtt_med: NaN
+
+
+Message stats for scenario ed_multi_scenario  (SprayAndWait Buffer-25M, Speed-3.5-6.5, Bt-20, 96nodes)
+sim_time: 10000.0000
+created: 1430
+started: 11816
+relayed: 7196
+aborted: 4616
+dropped: 4434
+removed: 0
+delivered: 1059
+delivery_prob: 0.7406
+response_prob: 0.0000
+overhead_ratio: 5.7951
+latency_avg: 1679.6027
+latency_med: 1449.9000
+hopcount_avg: 2.3229
+hopcount_med: 2
+buffertime_avg: 3779.9776
+buffertime_med: 3735.0000
+rtt_avg: NaN
+rtt_med: NaN
+
+
+Message stats for scenario ed_multi_scenario (Epidemic, Buffer-25M, Speed-3.5-6.5, Bt-20, 96nodes)
+sim_time: 120000.0000
+created: 17114
+started: 203197
+relayed: 135587
+aborted: 67608
+dropped: 140180
+removed: 0
+delivered: 9341
+delivery_prob: 0.5458
+response_prob: 0.0000
+overhead_ratio: 13.5153
+latency_avg: 2754.5358
+latency_med: 2216.7000
+hopcount_avg: 1.9889
+hopcount_med: 2
+buffertime_avg: 2667.4261
+buffertime_med: 2585.2000
+rtt_avg: NaN
+rtt_med: NaN
+
+
+Message stats for scenario ed_multi_scenario  ( Buffer-25M, Speed-3.5-6.5, Bt-20, 96nodes)
+sim_time: 120000.0000
+created: 17114
+started: 17292
+relayed: 13753
+aborted: 3539
+dropped: 14586
+removed: 0
+delivered: 13753
+delivery_prob: 0.8036
+response_prob: 0.0000
+overhead_ratio: 0.0000
+latency_avg: 5748.8114
+latency_med: 4659.1000
+hopcount_avg: 1.0000
+hopcount_med: 1
+buffertime_avg: 17661.0813
+buffertime_med: 17963.0000
+rtt_avg: NaN
+rtt_med: NaN
+
+Message stats for scenario ed_multi_scenario ( Buffer-25M, Speed-3.5-6.5, Bt-20, 96nodes)
+sim_time: 10000.0000
+created: 1430
+started: 690
+relayed: 584
+aborted: 106
+dropped: 0
+removed: 0
+delivered: 584
+delivery_prob: 0.4084
+response_prob: 0.0000
+overhead_ratio: 0.0000
+latency_avg: 2760.7866
+latency_med: 2217.1000
+hopcount_avg: 1.0000
+hopcount_med: 1
+buffertime_avg: NaN
+buffertime_med: NaN
+rtt_avg: NaN
+rtt_med: NaN
+
+
+
+Message stats for scenario ed_multi_scenario ( Buffer-25M, Speed-3.5-6.5, Bt-20, 96nodes)
+sim_time: 10000.0000
+created: 1430
+started: 16485
+relayed: 10898
+aborted: 5583
+dropped: 8420
+removed: 0
+delivered: 648
+delivery_prob: 0.4531
+response_prob: 0.0000
+overhead_ratio: 15.8179
+latency_avg: 1971.8846
+latency_med: 1606.8000
+hopcount_avg: 2.0324
+hopcount_med: 2
+buffertime_avg: 2461.9762
+buffertime_med: 2377.3000
+rtt_avg: NaN
+rtt_med: NaN
+
+
+Message stats for scenario ed_multi_scenario (Spray and wait Buffer-25M, Speed-3.5-6.5, Bt-20, 96nodes)
+sim_time: 120000.0000
+created: 17114
+started: 154622
+relayed: 93830
+aborted: 60792
+dropped: 92696
+removed: 0
+delivered: 15113
+delivery_prob: 0.8831
+response_prob: 0.0000
+overhead_ratio: 5.2086
+latency_avg: 1983.9003
+latency_med: 1728.4000
+hopcount_avg: 2.3016
+hopcount_med: 2
+buffertime_avg: 3843.2675
+buffertime_med: 3793.8000
+rtt_avg: NaN
+rtt_med: NaN
+
+
+Message stats for scenario ed_multi_scenario (Epidemic Buffer-25M, Speed-3.5-6.5, Bt-20, 96nodes)
+sim_time: 120000.0000
+created: 17114
+started: 203197
+relayed: 135587
+aborted: 67608
+dropped: 140180
+removed: 0
+delivered: 9341
+delivery_prob: 0.5458
+response_prob: 0.0000
+overhead_ratio: 13.5153
+latency_avg: 2754.5358
+latency_med: 2216.7000
+hopcount_avg: 1.9889
+hopcount_med: 2
+buffertime_avg: 2667.4261
+buffertime_med: 2585.2000
+rtt_avg: NaN
+rtt_med: NaN
+
+
+Message stats for scenario ed_multi_scenario
+sim_time: 120000.0000
+created: 17114
+started: 17292
+relayed: 13753
+aborted: 3539
+dropped: 14586
+removed: 0
+delivered: 13753
+delivery_prob: 0.8036
+response_prob: 0.0000
+overhead_ratio: 0.0000
+latency_avg: 5748.8114
+latency_med: 4659.1000
+hopcount_avg: 1.0000
+hopcount_med: 1
+buffertime_avg: 17661.0813
+buffertime_med: 17963.0000
+rtt_avg: NaN
+rtt_med: NaN

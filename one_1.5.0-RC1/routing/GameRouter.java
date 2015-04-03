@@ -36,6 +36,8 @@ public class GameRouter extends ActiveRouter {
 
 	/** sumEncounters of total encounters by every node*/
 	private static Map<DTNHost, Integer> sumEncounters;
+	
+	private static Map<DTNHost, Double> gamma;
 
 	/**
 	 * Constructor. Creates a new message router based on the settings in
@@ -159,9 +161,13 @@ public class GameRouter extends ActiveRouter {
 	
 		Collection<Message> msgCollection = getMessageCollection();
 		
+		this.gamma=new HashMap<DTNHost, Double>();
+		
 		/* for all connected hosts collect all messages that have a higher
 		   gamma(alpha/beta) of delivery by the other host */
-		for (Connection con : getConnections()) {
+		for (Connection con : getConnections()) { 
+		
+		
 
 			DTNHost me = getHost();
 			DTNHost other = con.getOtherNode(getHost());
@@ -193,26 +199,39 @@ public class GameRouter extends ActiveRouter {
 				{
 					//System.out.println();
 					alphaOther=0;
-					alphaMe=0;
+					//alphaMe=0;
 				}
 				else
 				{
 					alphaOther=getEncounter(dest,other)/getsumEncounters(dest);
-					alphaMe=getEncounter(dest,me)/getsumEncounters(dest);
+					//alphaMe=getEncounter(dest,me)/getsumEncounters(dest);
 				}
 				
 				//beta for otherRouter
 				betaOther=getDistFor(dest,other)/getsumDist(dest);
 				//beta for sourceRouter
-				betaMe=getDistFor(me,other)/getsumDist(dest);
+				//betaMe=getDistFor(me,other)/getsumDist(dest);
 
 				//System.out.println("getEncMe="+getEncounter(dest,me)+" "+"getsumEncounters="+getsumEncounters(dest));
 				//System.out.println(betaOther);
 				//System.out.println();
-				//the other node has higher gamma
-				if((alphaOther/betaOther)<(alphaMe/betaMe)){
+				
+				//add to the list of gammas
+				gamma.put(other,alphaOther/betaOther);
+				
+				//selecting the highest gamma from the list of gammas
+				
+				Double max_gamma=(Collections.max(gamma.values()));
+				
+				if((alphaOther/betaOther)==max_gamma){    //single scheme implementation
 					messages.add(new Tuple<Message, Connection>(m,con));	
-				}
+				} //end of if 
+				
+				/*if((alphaOther/betaOther)<(alphaMe/betaMe)){    //multischeme implementation
+					messages.add(new Tuple<Message, Connection>(m,con));	
+				} //end of if */
+				
+				
 			}			
 		}
 		

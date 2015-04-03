@@ -24,13 +24,27 @@ import core.Message;
 import core.Settings;
 import core.SimClock;
 
+
 /**
  * Implementation of Game router as described in 
  * <I>Probabilistic routing in intermittently connected networks</I> by
  * Anders Lindgren et al.
  */
-public class edMultiRouter extends ActiveRouter {
-	
+public class edMultiRouter extends ActiveRouter{
+
+
+   private static int start=0; // Transferring messages when start=1
+   private static int nodeCount=-1; //to store the count of no of nodes 
+   private double zerothreshold; //to check how much of the encounter matrix has been filled
+
+   public static final double DEFAULT_ZEROTHRESHOLD=0.25;
+   
+   public static final String edMulti_NS = "edMultiRouter";
+    
+   private double maxPossibleZeroes=nodeCount*nodeCount*zerothreshold;
+
+   public static final String ZEROTHRESHOLD_S = "zerothreshold";
+   
 	/** number of encounters of every node with every other node*/
 	private static int[][] encounters;
 
@@ -44,6 +58,14 @@ public class edMultiRouter extends ActiveRouter {
 	 */
 	public edMultiRouter(Settings s) {
 		super(s);
+		Settings edMultiSettings = new Settings(edMulti_NS);
+		
+		if (edMultiSettings.contains(ZEROTHRESHOLD_S)) {
+			zerothreshold = edMultiSettings.getDouble(ZEROTHRESHOLD_S);
+		}
+		else {
+			zerothreshold = DEFAULT_ZEROTHRESHOLD;
+		}
 	}
 
 	/**
@@ -52,7 +74,31 @@ public class edMultiRouter extends ActiveRouter {
 	 */
 	protected edMultiRouter(edMultiRouter r) {
 		super(r);
+		this.zerothreshold=r.zerothreshold;
 	}
+	
+	 void checkStart()  {   
+	
+		int countZeroes=0;
+	
+		int i,j;
+	
+		for(i=0;i<nodeCount;i++) {
+	    	for(j=0;j<nodeCount;j++) {
+	       		if(encounters[i][j]==0){
+	       	   		countZeroes++;
+	        	}
+	    	}
+		}
+	    if(countZeroes < maxPossibleZeroes)
+	    {
+	        start=1; //set start to 1 if the encounter matrix satisfies threshold for no of zero values
+	    }
+	    
+	    return;
+	    
+	}   //end of checkStart 
+	
 	
 	@Override
 	public void changedConnection(Connection con) {
@@ -60,7 +106,19 @@ public class edMultiRouter extends ActiveRouter {
 		
 		if (con.isUp()) {
 			DTNHost otherHost = con.getOtherNode(getHost());
+			
+			if(nodeCount==-1)
+			{
+				nodeCount=otherHost.getHosts().size();
+				maxPossibleZeroes=nodeCount*nodeCount*zerothreshold;
+			}
+			
 			updateEncounters(getHost(),otherHost);
+			//to set start
+		 	if(start==0) { 
+				checkStart();
+			}  
+		
 		}
 	}
 	
@@ -145,8 +203,18 @@ public class edMultiRouter extends ActiveRouter {
 		if (exchangeDeliverableMessages() != null) {
 			return;
 		}
+
+
+        //tryOtherMessages();
 		
-		tryOtherMessages();		
+		//To begin simulation when start=1
+        //i.e. when the encounter matrix has no zero value
+		 if(start==1)
+		{
+			tryOtherMessages();	
+		}	 
+		
+		
 	}
 	
 	/**
@@ -162,25 +230,28 @@ public class edMultiRouter extends ActiveRouter {
 		
 		for(Message m : msgCollection){
 
-			Map<DTNHost, Double> bestGammaWorld = new HashMap<DTNHost, Double>();
+			//Map<DTNHost, Double> bestGammaWorld = new HashMap<DTNHost, Double>();
 
 			Map<DTNHost, Double> bestGammaLocal = new HashMap<DTNHost, Double>();
 
 			DTNHost dest = m.getTo();
 
-			double threshold=1;
+			double threshold;
+			int count=0;
+	        double gammaTotal=0;
 
-			/*
-			for(DTNHost node : getHost().getHosts()){
 
-				//alpha and beta of otherRouter
+            //to calculate gamma for the whole network
+            			
+			/*for(DTNHost node : getHost().getHosts()){
+
+				//alpha and beta of the nodes
 				double alphaNode,betaNode,gammaNode;
 
 				//if the sumEncounters of encounters of all other nodes w.r.t destination is 0,
 				//then initialise alphaOther to 0 (prevents divide by zero error)
 				if(getsumEncounters(dest)==0)
 				{
-					//System.out.println();
 					alphaNode=0;
 				}
 				else
@@ -193,11 +264,59 @@ public class edMultiRouter extends ActiveRouter {
 
 				gammaNode=alphaNode/betaNode;
 
-				if(gammaNode>threshold)
-					bestGammaWorld.put(node,gammaNode);
-			}
-			*/
+				if(gammaNode>=threshold)
+					{bestGammaWorld.put(node,gammaNode);
+					
+					//for printing the values of gamma
+				/*for(Map.Entry<DTNHost, Double> nodenew : bestGammaWorld.entrySet())
+				{
+				System.out.println(nodenew.getKey()); System.out.println(nodenew.getValue());
+				System.out.println("\n");
+				
+								} 
+			} 
+			
+			
+		} */
+			
+			
+			//to calculate the mean gamma for the neighbours
+			for (Connection con : getConnections()){
 
+				DTNHost me = getHost();
+				DTNHost other = con.getOtherNode(getHost());
+				edMultiRouter othRouter = (edMultiRouter)other.getRouter();
+				
+				//alpha and beta of otherRouter
+				double alphaOther,betaOther,gammaOther;
+
+				//if the sumEncounters of encounters of all other nodes w.r.t destination is 0,
+				//then initialise alphaOther to 0 (prevents divide by zero error)
+				if(getsumEncounters(dest)==0)
+				{
+					alphaOther=0;
+				}
+				else
+				{   //System.out.println(getEncounter(dest,other));
+					alphaOther=(double) getEncounter(dest,other)/getsumEncounters(dest);
+				}
+				
+				//beta for otherRouter
+				betaOther=getDistFor(dest,other)/getsumDist(dest);
+
+                //System.out.println(alphaOther);
+				gammaOther=alphaOther/betaOther;
+                //System.out.println(gammaOther);
+                
+				gammaTotal+=gammaOther;
+				count++;
+			}
+			
+			//calculation of mean threshold
+			threshold=gammaTotal/count;
+			//System.out.println(threshold);
+		            
+            //to calculate the gamma for the neighbours
 			for (Connection con : getConnections()){
 
 				DTNHost me = getHost();
@@ -218,8 +337,12 @@ public class edMultiRouter extends ActiveRouter {
 				}
 				else
 				{
+<<<<<<< HEAD
 					alphaOther=getEncounter(dest,other)/getsumEncounters(dest);
 					alphaMe=getEncounter(dest,me)/getsumEncounters(me);
+=======
+					alphaOther=(double) getEncounter(dest,other)/getsumEncounters(dest);
+>>>>>>> Threshold_Calculation
 				}
 				
 				//beta for otherRouter
@@ -227,8 +350,13 @@ public class edMultiRouter extends ActiveRouter {
 				//beta for MeRouter
 				betaMe=getDistFor(dest,me)/getsumDist(me);
 
+<<<<<<< HEAD
 				gammaOther=alphaOther/betaOther;
 				gammaMe=alphaMe/betaMe;
+=======
+				gammaOther=(double)alphaOther/betaOther;
+				//System.out.println(gammaOther);
+>>>>>>> Threshold_Calculation
 
 				if(gammaOther>threshold)
 					bestGammaLocal.put(other,gammaOther);
@@ -239,6 +367,8 @@ public class edMultiRouter extends ActiveRouter {
 			//intersection.keySet().retainAll(bestGammaWorld.keySet());
 
 			//if intersection is not empty
+			
+			
 			if(!bestGammaLocal.isEmpty()){
 				/*
 				Connection c= new Connection(getHost(),getHost().getInterface(),maxGamma.getKey(),maxGamma.getKey().getInterface());
@@ -248,6 +378,8 @@ public class edMultiRouter extends ActiveRouter {
 					messages.add(new Tuple<Message, Connection>(m,con));	
 				}
 				*/
+				
+				
 				
 				for(Connection con : getConnections())
 				{
@@ -261,15 +393,23 @@ public class edMultiRouter extends ActiveRouter {
 					}
 					if(bestGammaLocal.containsKey(other))
 					{
-						messages.add(new Tuple<Message, Connection>(m,con));	
+					   
+       					messages.add(new Tuple<Message, Connection>(m,con));	
 					}
-				}
-				
+				}  //end of for loop				
 			}
+<<<<<<< HEAD
 			/*
 			else{
 
 				for(Connection con : getConnections())
+=======
+			
+			//flooding
+	     else 
+			{
+			for(Connection con : getConnections())
+>>>>>>> Threshold_Calculation
 				{
 					DTNHost other=con.getOtherNode(getHost());
 					edMultiRouter othRouter = (edMultiRouter)other.getRouter();
@@ -279,6 +419,7 @@ public class edMultiRouter extends ActiveRouter {
 					if(othRouter.hasMessage(m.getId())){
 						continue;
 					}
+<<<<<<< HEAD
 				
 				
 						messages.add(new Tuple<Message, Connection>(m,con));	
@@ -286,6 +427,14 @@ public class edMultiRouter extends ActiveRouter {
 				}
 			}
 			*/
+=======
+
+						messages.add(new Tuple<Message, Connection>(m,con));	
+				} 
+			
+			
+			}  //end of else 
+>>>>>>> Threshold_Calculation
 		}
 		
 		if (messages.size() == 0) {
