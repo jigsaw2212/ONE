@@ -1,0 +1,20 @@
+Message stats for scenario SnW_15M
+sim_time: 10000.0000
+created: 339
+started: 8933
+relayed: 3856
+aborted: 5076
+dropped: 1378
+removed: 0
+delivered: 188
+delivery_prob: 0.5546
+response_prob: 0.0000
+overhead_ratio: 19.5106
+latency_avg: 2843.7457
+latency_med: 2595.8000
+hopcount_avg: 2.7819
+hopcount_med: 3
+buffertime_avg: 5025.5250
+buffertime_med: 4943.3000
+rtt_avg: NaN
+rtt_med: NaN

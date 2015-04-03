@@ -1,0 +1,20 @@
+Message stats for scenario ProbabilisticRouting_10M
+sim_time: 10000.0000
+created: 339
+started: 9947
+relayed: 4880
+aborted: 5065
+dropped: 3221
+removed: 0
+delivered: 245
+delivery_prob: 0.7227
+response_prob: 0.0000
+overhead_ratio: 18.9184
+latency_avg: 1507.7065
+latency_med: 1300.7000
+hopcount_avg: 2.7714
+hopcount_med: 3
+buffertime_avg: 2740.0014
+buffertime_med: 2538.0000
+rtt_avg: NaN
+rtt_med: NaN

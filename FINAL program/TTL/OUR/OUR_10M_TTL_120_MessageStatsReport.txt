@@ -1,0 +1,20 @@
+Message stats for scenario OUR_10M_TTL_120
+sim_time: 10000.0000
+created: 339
+started: 9938
+relayed: 4881
+aborted: 5055
+dropped: 3306
+removed: 0
+delivered: 243
+delivery_prob: 0.7168
+response_prob: 0.0000
+overhead_ratio: 19.0864
+latency_avg: 1473.4926
+latency_med: 1300.0000
+hopcount_avg: 2.7654
+hopcount_med: 3
+buffertime_avg: 2837.2934
+buffertime_med: 2571.2000
+rtt_avg: NaN
+rtt_med: NaN
