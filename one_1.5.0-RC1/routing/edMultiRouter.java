@@ -35,7 +35,16 @@ public class edMultiRouter extends ActiveRouter{
 
    private static int start=0; // Transferring messages when start=1
    private static int nodeCount=-1; //to store the count of no of nodes 
+   private double zerothreshold; //to check how much of the encounter matrix has been filled
+
+   public static final double DEFAULT_ZEROTHRESHOLD=0.25;
+   
+   public static final String edMulti_NS = "edMultiRouter";
     
+   private double maxPossibleZeroes=nodeCount*nodeCount*zerothreshold;
+
+   public static final String ZEROTHRESHOLD_S = "zerothreshold";
+   
 	/** number of encounters of every node with every other node*/
 	private static int[][] encounters;
 
@@ -49,6 +58,14 @@ public class edMultiRouter extends ActiveRouter{
 	 */
 	public edMultiRouter(Settings s) {
 		super(s);
+		Settings edMultiSettings = new Settings(edMulti_NS);
+		
+		if (edMultiSettings.contains(ZEROTHRESHOLD_S)) {
+			zerothreshold = edMultiSettings.getDouble(ZEROTHRESHOLD_S);
+		}
+		else {
+			zerothreshold = DEFAULT_ZEROTHRESHOLD;
+		}
 	}
 
 	/**
@@ -57,24 +74,30 @@ public class edMultiRouter extends ActiveRouter{
 	 */
 	protected edMultiRouter(edMultiRouter r) {
 		super(r);
+		this.zerothreshold=r.zerothreshold;
 	}
 	
-	void checkStart()  {   
+	 void checkStart()  {   
 	
+		int countZeroes=0;
 	
-	int i,j;
+		int i,j;
 	
-	for(i=0;i<nodeCount;i++) {
-	    for(j=0;j<nodeCount;j++) {
-	        if(encounters[i][j]==0)
-	            return;
+		for(i=0;i<nodeCount;i++) {
+	    	for(j=0;j<nodeCount;j++) {
+	       		if(encounters[i][j]==0){
+	       	   		countZeroes++;
+	        	}
+	    	}
+		}
+	    if(countZeroes < maxPossibleZeroes)
+	    {
+	        start=1; //set start to 1 if the encounter matrix satisfies threshold for no of zero values
 	    }
-	  
-	}
-	    start=1; //set start to 1 if the encounter matrix has no zero value
+	    
 	    return;
 	    
-	}   //end of checkStart
+	}   //end of checkStart 
 	
 	
 	@Override
@@ -85,13 +108,16 @@ public class edMultiRouter extends ActiveRouter{
 			DTNHost otherHost = con.getOtherNode(getHost());
 			
 			if(nodeCount==-1)
-			nodeCount=otherHost.getHosts().size();
+			{
+				nodeCount=otherHost.getHosts().size();
+				maxPossibleZeroes=nodeCount*nodeCount*zerothreshold;
+			}
 			
 			updateEncounters(getHost(),otherHost);
-			
-		if(start==0) { //to set start
-			checkStart();
-		}
+			//to set start
+		 	if(start==0) { 
+				checkStart();
+			}  
 		
 		}
 	}
@@ -178,13 +204,15 @@ public class edMultiRouter extends ActiveRouter{
 			return;
 		}
 
+
+        //tryOtherMessages();
 		
 		//To begin simulation when start=1
         //i.e. when the encounter matrix has no zero value
 		 if(start==1)
-		{tryOtherMessages();	
-		
-		}	
+		{
+			tryOtherMessages();	
+		}	 
 		
 		
 	}
@@ -252,7 +280,7 @@ public class edMultiRouter extends ActiveRouter{
 		} */
 			
 			
-			//to calculate the gamma for the neighbours
+			//to calculate the mean gamma for the neighbours
 			for (Connection con : getConnections()){
 
 				DTNHost me = getHost();
@@ -269,22 +297,25 @@ public class edMultiRouter extends ActiveRouter{
 					alphaOther=0;
 				}
 				else
-				{
-					alphaOther=getEncounter(dest,other)/getsumEncounters(dest);
+				{   //System.out.println(getEncounter(dest,other));
+					alphaOther=(double) getEncounter(dest,other)/getsumEncounters(dest);
 				}
 				
 				//beta for otherRouter
 				betaOther=getDistFor(dest,other)/getsumDist(dest);
 
+                //System.out.println(alphaOther);
 				gammaOther=alphaOther/betaOther;
-
+                //System.out.println(gammaOther);
+                
 				gammaTotal+=gammaOther;
 				count++;
 			}
 			
 			//calculation of mean threshold
 			threshold=gammaTotal/count;
-            
+			//System.out.println(threshold);
+		            
             //to calculate the gamma for the neighbours
 			for (Connection con : getConnections()){
 
@@ -303,13 +334,14 @@ public class edMultiRouter extends ActiveRouter{
 				}
 				else
 				{
-					alphaOther=getEncounter(dest,other)/getsumEncounters(dest);
+					alphaOther=(double) getEncounter(dest,other)/getsumEncounters(dest);
 				}
 				
 				//beta for otherRouter
 				betaOther=getDistFor(dest,other)/getsumDist(dest);
 
-				gammaOther=alphaOther/betaOther;
+				gammaOther=(double)alphaOther/betaOther;
+				//System.out.println(gammaOther);
 
 				if(gammaOther>threshold)
 					bestGammaLocal.put(other,gammaOther);
