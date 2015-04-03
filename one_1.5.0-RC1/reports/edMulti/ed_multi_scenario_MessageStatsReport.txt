@@ -1,0 +1,23 @@
+<<<<<<< HEAD
+Message stats for scenario ed_multi_scenario
+sim_time: 10000.0000
+created: 1422
+started: 290
+relayed: 261
+aborted: 29
+dropped: 31
+removed: 0
+delivered: 261
+delivery_prob: 0.1835
+response_prob: 0.0000
+overhead_ratio: 0.0000
+latency_avg: 2891.4230
+latency_med: 2463.9000
+hopcount_avg: 1.0000
+hopcount_med: 1
+buffertime_avg: 8738.7097
+buffertime_med: 8816.0000
+rtt_avg: NaN
+rtt_med: NaN
+=======
+>>>>>>> Threshold_Calculation

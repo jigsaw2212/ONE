@@ -1,0 +1,178 @@
+edMulti(threshold=90)
+Message stats for scenario ed_multi_scenario
+sim_time: 10000.0000
+created: 1422
+started: 315
+relayed: 276
+aborted: 39
+dropped: 29
+removed: 0
+delivered: 274
+delivery_prob: 0.1927
+response_prob: 0.0000
+overhead_ratio: 0.0073
+latency_avg: 2719.9113
+latency_med: 2197.6000
+hopcount_avg: 1.0036
+hopcount_med: 1
+buffertime_avg: 8741.6897
+buffertime_med: 8877.0000
+rtt_avg: NaN
+rtt_med: NaN
+
+edMulti(threshold=0)
+Message stats for scenario ed_multi_scenario
+sim_time: 10000.0000
+created: 1422
+started: 317
+relayed: 278
+aborted: 39
+dropped: 30
+removed: 0
+delivered: 275
+delivery_prob: 0.1934
+response_prob: 0.0000
+overhead_ratio: 0.0109
+latency_avg: 2729.6036
+latency_med: 2197.6000
+hopcount_avg: 1.0073
+hopcount_med: 1
+buffertime_avg: 8749.7333
+buffertime_med: 8924.0000
+rtt_avg: NaN
+rtt_med: NaN
+
+epidemic
+Message stats for scenario ed_multi_scenario
+sim_time: 10000.0000
+created: 1422
+started: 3445
+relayed: 2454
+aborted: 991
+dropped: 1826
+removed: 0
+delivered: 327
+delivery_prob: 0.2300
+response_prob: 0.0000
+overhead_ratio: 6.5046
+latency_avg: 2886.8930
+latency_med: 2650.4000
+hopcount_avg: 1.6850
+hopcount_med: 1
+buffertime_avg: 3813.0033
+buffertime_med: 3734.5000
+rtt_avg: NaN
+rtt_med: NaN
+
+spray&wait
+Message stats for scenario ed_multi_scenario
+sim_time: 10000.0000
+created: 1422
+started: 3312
+relayed: 2324
+aborted: 988
+dropped: 1671
+removed: 0
+delivered: 365
+delivery_prob: 0.2567
+response_prob: 0.0000
+overhead_ratio: 5.3671
+latency_avg: 2721.1975
+latency_med: 2356.8000
+hopcount_avg: 1.6959
+hopcount_med: 1
+buffertime_avg: 4133.7762
+buffertime_med: 4044.5000
+rtt_avg: NaN
+rtt_med: NaN
+
+edMulti(flooding when thresh=0)
+Message stats for scenario ed_multi_scenario
+sim_time: 10000.0000
+created: 1422
+started: 3446
+relayed: 2432
+aborted: 1014
+dropped: 1823
+removed: 0
+delivered: 318
+delivery_prob: 0.2236
+response_prob: 0.0000
+overhead_ratio: 6.6478
+latency_avg: 2637.2135
+latency_med: 2288.3000
+hopcount_avg: 1.5755
+hopcount_med: 1
+buffertime_avg: 3887.9556
+buffertime_med: 3759.9000
+rtt_avg: NaN
+rtt_med: NaN
+
+prophet
+Message stats for scenario ed_multi_scenario
+sim_time: 10000.0000
+created: 1422
+started: 2781
+relayed: 1929
+aborted: 852
+dropped: 1318
+removed: 0
+delivered: 338
+delivery_prob: 0.2377
+response_prob: 0.0000
+overhead_ratio: 4.7071
+latency_avg: 3012.8888
+latency_med: 2708.2000
+hopcount_avg: 1.5089
+hopcount_med: 1
+buffertime_avg: 4356.3087
+buffertime_med: 4301.6000
+rtt_avg: NaN
+rtt_med: NaN
+
+edmulti(thresh=source+floodingWhen0)
+Message stats for scenario ed_multi_scenario
+sim_time: 10000.0000
+created: 1422
+started: 3446
+relayed: 2432
+aborted: 1014
+dropped: 1823
+removed: 0
+delivered: 318
+delivery_prob: 0.2236
+response_prob: 0.0000
+overhead_ratio: 6.6478
+latency_avg: 2637.2135
+latency_med: 2288.3000
+hopcount_avg: 1.5755
+hopcount_med: 1
+buffertime_avg: 3887.9556
+buffertime_med: 3759.9000
+rtt_avg: NaN
+rtt_med: NaN
+
+edMulti(thresh=source)
+Message stats for scenario ed_multi_scenario
+sim_time: 10000.0000
+created: 1422
+started: 317
+relayed: 278
+aborted: 39
+dropped: 30
+removed: 0
+delivered: 275
+delivery_prob: 0.1934
+response_prob: 0.0000
+overhead_ratio: 0.0109
+latency_avg: 2729.6036
+latency_med: 2197.6000
+hopcount_avg: 1.0073
+hopcount_med: 1
+buffertime_avg: 8749.7333
+buffertime_med: 8924.0000
+rtt_avg: NaN
+rtt_med: NaN
+
+
+
