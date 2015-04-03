@@ -1,0 +1,41 @@
+Message stats for scenario ed_single_scenario(1000 secs)
+sim_time: 10000.0000
+created: 143
+started: 69
+relayed: 50
+aborted: 19
+dropped: 0
+removed: 0
+delivered: 50
+delivery_prob: 0.3497
+response_prob: 0.0000
+overhead_ratio: 0.0000
+latency_avg: 2329.9060
+latency_med: 2042.3000
+hopcount_avg: 1.0000
+hopcount_med: 1
+buffertime_avg: NaN
+buffertime_med: NaN
+rtt_avg: NaN
+rtt_med: NaN
+
+Message stats for scenario ed_single_scenario (at 25000 seconds)
+sim_time: 25000.1000
+created: 359
+started: 319
+relayed: 225
+aborted: 94
+dropped: 100
+removed: 0
+delivered: 225
+delivery_prob: 0.6267
+response_prob: 0.0000
+overhead_ratio: 0.0000
+latency_avg: 4918.1542
+latency_med: 3613.1000
+hopcount_avg: 1.0000
+hopcount_med: 1
+buffertime_avg: 17970.5600
+buffertime_med: 17970.5000
+rtt_avg: NaN
+rtt_med: NaN
