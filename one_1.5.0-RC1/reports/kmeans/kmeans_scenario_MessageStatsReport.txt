@@ -1,17 +1,17 @@
 Message stats for scenario kmeans_scenario
-sim_time: 10000.0000
-created: 338
-started: 140
-relayed: 69
-aborted: 71
+sim_time: 3180.7000
+created: 109
+started: 14
+relayed: 5
+aborted: 9
 dropped: 0
 removed: 0
-delivered: 69
-delivery_prob: 0.2041
+delivered: 5
+delivery_prob: 0.0459
 response_prob: 0.0000
 overhead_ratio: 0.0000
-latency_avg: 3308.8348
-latency_med: 3016.8000
+latency_avg: 1459.0600
+latency_med: 1290.8000
 hopcount_avg: 1.0000
 hopcount_med: 1
 buffertime_avg: NaN
