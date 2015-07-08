@@ -24,8 +24,14 @@ import core.Message;
 import core.Settings;
 import core.SimClock;
 
-import org.jblas.*;
 import org.shogun.*;
+import org.jblas.*;
+import static org.shogun.Math.init_random;
+import static org.shogun.LabelsFactory.to_multiclass;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Implementation of Game router as described in 
@@ -41,8 +47,9 @@ public class kMeansRouter extends ActiveRouter{
 
    public static final double DEFAULT_ZEROTHRESHOLD=0.25;
    
-   public static final String edMulti_NS = "kMeansRouter";
-    
+   public static final String kMeans_NS = "kMeansRouter";
+   
+   //if zerothreshold=0.25, it means 75% of the encounter matrix must be filled before we start the algorithm
    private double maxPossibleZeroes=nodeCount*nodeCount*zerothreshold;
 
    public static final String ZEROTHRESHOLD_S = "zerothreshold";
@@ -57,10 +64,10 @@ public class kMeansRouter extends ActiveRouter{
 	 */
 	public kMeansRouter(Settings s) {
 		super(s);
-		Settings edMultiSettings = new Settings(edMulti_NS);
+		Settings kMeansSettings = new Settings(kMeans_NS);
 		
-		if (edMultiSettings.contains(ZEROTHRESHOLD_S)) {
-			zerothreshold = edMultiSettings.getDouble(ZEROTHRESHOLD_S);
+		if (kMeansSettings.contains(ZEROTHRESHOLD_S)) {
+			zerothreshold = kMeansSettings.getDouble(ZEROTHRESHOLD_S);
 		}
 		else {
 			zerothreshold = DEFAULT_ZEROTHRESHOLD;
@@ -193,7 +200,11 @@ public class kMeansRouter extends ActiveRouter{
 	
 		Collection<Message> msgCollection = getMessageCollection();
 
-		
+		//System.out.println("poop");
+
+		//i don't think we need to run k-means for every message again and again.
+		// running k means once should be enough and store the results and use that on every message
+		//here we are running kmeans fro every message in msgCollection and we need to change that.
 		for(Message m : msgCollection){
 
             DTNHost dest = m.getTo();
@@ -201,7 +212,7 @@ public class kMeansRouter extends ActiveRouter{
             double[][] featureMatrix=new double[getConnections().size()][noOfFeatures];
             int i=0;
 
-
+           // System.out.println("no. of connections="+getConnections().size());
             //to get the feature matrix of the neighbours.
 			for (Connection con : getConnections()){
 
@@ -214,62 +225,105 @@ public class kMeansRouter extends ActiveRouter{
 				featureMatrix[i][1]=getDistFor(other,dest);
 				i++;
 			}
-
+			//System.out.println("poop1");
 			//convert the java Double Matrix to jblas DubleMatrix
 			DoubleMatrix features = new DoubleMatrix(featureMatrix);
-
+			//System.out.println(features);
+			//System.out.println("poop1");
 			//load the shogun library
 			System.load("/usr/local/lib/jni/libmodshogun.so");
-
+			//System.out.println("poopk");			
 			//initialize shogun with default values
 			modshogun.init_shogun_with_defaults();
 
 			//number of clusters=2
 			int k=2;
+			init_random(17);
+			//DoubleMatrix fm_train = Load.load_numbers("~/projects/shogun/data/fm_train_real.dat");
 
 			//convert jblas features to RealFeatures that are compatible with shogun
+			features=features.transpose();
+
 			RealFeatures feats_train = new RealFeatures(features);
+			//RealFeatures feats_train = new RealFeatures(features);
+
+			//pre-processing
+			//mean normalization
+		//	NormOne preproc = new NormOne();
+
+		//	preproc.init(feats_train);
+
+			//feats_train.add_preprocessor(new NormOne());
+			//feats_train.add_preprocessor(new LogPlusOne());
+
+			//feats_train.apply_preprocessor();
+
+			//System.out.println("poopk");			
+
+			//System.out.println(feats_train);			
 
 																//???
 			EuclideanDistance distance=new EuclideanDistance(feats_train,feats_train);
 
+
 			KMeans kmeans=new KMeans(k,distance);
+
+			kmeans.set_use_kmeanspp(true);
 			kmeans.train();
 
+
 			DoubleMatrix cluster_centers=kmeans.get_cluster_centers();
-
+			cluster_centers=cluster_centers.transpose();
 			DoubleMatrix cluster_radiuses=kmeans.get_radiuses();
+			DoubleMatrix result=to_multiclass(kmeans.apply()).get_labels();
 
+			//System.out.println("poop2");
+
+			//System.out.println(cluster_centers);
+			//System.out.println(cluster_centers.columns);
+			//System.out.println(cluster_radiuses);
+
+			//System.out.println(result);
+			//System.out.println(cluster_radiuses.columns);
+			
 			int positive_cluster;
 			//find out the positive cluster
-		    if(cluster_centers.get(0,1)<cluster_centers.get(1,1))
-		    {
-		    	//distance of cluster1<distance of cluster 2
-		    	positive_cluster=0;
-		    }
-		    else if(cluster_centers.get(0,1)>cluster_centers.get(1,1))
-		    {
-		    	//distance of cluster1>distance of cluster 2
-		    	positive_cluster=1;
-		    }
-		    else
-		    {
-		    	//distance of cluster1==distance of cluster 2
-		    	//if distances are equal then compare by encounters
-		    	if(cluster_centers.get(0,0)>cluster_centers.get(0,0))
-		    	{
-		    		positive_cluster=0;
-		    	}
-		    	else
-		    	{
-		    		positive_cluster=1;
-		    	}
-		    }
 
-		    System.out.println("positive_cluster="+ positive_cluster);
+			if(cluster_centers.rows==1){
+				positive_cluster=0;
+			}
+			else{
+			    if(cluster_centers.get(0,1)<cluster_centers.get(1,1))
+			    {
+			    	//distance of cluster1<distance of cluster 2
+			    	positive_cluster=0;
+			    }
+			    else if(cluster_centers.get(0,1)>cluster_centers.get(1,1))
+			    {
+			    	//distance of cluster1>distance of cluster 2
+			    	positive_cluster=1;
+			    }
+			    else
+			    {
+			    	//distance of cluster1==distance of cluster 2
+			    	//if distances are equal then compare by encounters
+			    	if(cluster_centers.get(0,0)>cluster_centers.get(1,0))
+			    	{
+			    		positive_cluster=0;
+			    	}
+			    	else
+			    	{
+			    		positive_cluster=1;
+			    	}
+			    }
+			}
+		 //   System.out.println("poop3");
+		  //  System.out.println("positive_cluster="+ positive_cluster);
+
 			modshogun.exit_shogun();
-			/*
+			
 			//loop over neighbors for transferring messages
+			i=0;
 			for(Connection con : getConnections())
 			{
 				DTNHost other=con.getOtherNode(getHost());
@@ -280,19 +334,19 @@ public class kMeansRouter extends ActiveRouter{
 				if(othRouter.hasMessage(m.getId())){
 					continue;
 				}
-				if(bestGammaLocal.containsKey(other))
+				if(result.get(0,i)==positive_cluster)
 				{
-				   
        				messages.add(new Tuple<Message, Connection>(m,con));	
 				}
+				i++;
 			}  //end of for loop				
-			*/
-
+			
+			/*
 			//flooding
 			for(Connection con : getConnections())
 				{
 					DTNHost other=con.getOtherNode(getHost());
-					edMultiRouter othRouter = (edMultiRouter)other.getRouter();
+					kMeansRouter othRouter = (kMeansRouter)other.getRouter();
 					if(othRouter.isTransferring()){
 						continue;
 					}
@@ -301,6 +355,7 @@ public class kMeansRouter extends ActiveRouter{
 					}
 					messages.add(new Tuple<Message, Connection>(m,con));	
 				} 		
+			*/
 		}
 		if (messages.size() == 0) {
 			return null;

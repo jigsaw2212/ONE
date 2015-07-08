@@ -58,7 +58,7 @@ Group.bufferSize = 20M
 Group.waitTime = 0, 120
 # All nodes have the bluetooth interface
 Group.nrofInterfaces = 1
-Group.interface1 = btInterface
+Group.interface1 = highspeedInterface
 # Walking speeds
 Group.speed = 1.5, 2.5
 # Message TTL of 300 minutes (5 hours)
@@ -159,6 +159,7 @@ Report.report2 = TotalEncountersReport
 
 ## Default settings for some routers settings
 ProphetRouter.secondsInTimeUnit = 30
+kMeansRouter.zerothreshold=0.50
 SprayAndWaitRouter.nrofCopies = 6
 SprayAndWaitRouter.binaryMode = true
 
