@@ -1,8 +1,8 @@
-javac -extdirs lib/ core/*.java
-javac -extdirs lib/ movement/*.java
-javac -extdirs lib/ report/*.java
-javac -extdirs lib/ routing/*.java
-javac -extdirs lib/ gui/*.java
-javac -extdirs lib/ input/*.java
-javac -extdirs lib/ applications/*.java
-javac -extdirs lib/ interfaces/*.java
+javac -Xlint:unchecked -extdirs lib/ core/*.java
+javac -Xlint:unchecked -extdirs lib/ movement/*.java
+javac -Xlint:unchecked -extdirs lib/ report/*.java
+javac -Xlint:unchecked -extdirs lib/ routing/*.java
+javac -Xlint:unchecked -extdirs lib/ gui/*.java
+javac -Xlint:unchecked -extdirs lib/ input/*.java
+javac -Xlint:unchecked -extdirs lib/ applications/*.java
+javac -Xlint:unchecked -extdirs lib/ interfaces/*.java
