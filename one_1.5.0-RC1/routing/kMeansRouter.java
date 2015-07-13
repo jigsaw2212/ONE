@@ -199,7 +199,7 @@ public class kMeansRouter extends ActiveRouter{
 		for(Message m : msgCollection){
 
             DTNHost dest = m.getTo();
-            int noOfFeatures=2;
+            int noOfFeatures=2,flag=0;;
             
             //System.out.println(dest.getHosts().size());
             
@@ -210,23 +210,29 @@ public class kMeansRouter extends ActiveRouter{
             //to get the feature matrix of the neighbours.
 			for (Connection con : getConnections()){
 
-
+                
 				//DTNHost me = getHost();
 				DTNHost other = con.getOtherNode(getHost());
 				//kMeansRouter othRouter = (kMeansRouter)other.getRouter();
 				
 				//System.out.println("DTNHost=" + other);
 				
+				if(getConnections().size() == 1){
+		        messages.add(new Tuple<Message, Connection>(m,con)); 
+		        flag=1;
+		        break;}
+				
 				featureMatrix[i][0]=(double)getEncounter(other,dest);
 				featureMatrix[i][1]=getDistFor(other,dest);
 				i++;
 			}
 			
-		    //System.out.println("No of Connections:" + getConnections().size());
+			if(flag==1)
+            continue;
 		   
 		    //Normalizing the feature matrix
 		    featureMatrix = normalize(featureMatrix, getConnections().size(), noOfFeatures);
-			dispMatrix(featureMatrix, getConnections().size(), noOfFeatures);
+			//dispMatrix(featureMatrix, getConnections().size(), noOfFeatures);
 			
 		
 			
@@ -280,7 +286,7 @@ public class kMeansRouter extends ActiveRouter{
 			cluster_centers = cluster_centers.transpose();
 			cluster_radiuses = cluster_radiuses.transpose();
 			
-			System.out.println(cluster_centers);
+			//System.out.println(cluster_centers);
 			//System.out.println(cluster_radiuses);
 			
 			

@@ -3,7 +3,7 @@
 #
 
 ## Scenario settings
-Scenario.name = KMeans_scenario
+Scenario.name = Prophet_scenario
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 # 43200s == 12h
@@ -21,7 +21,7 @@ Scenario.endTime = 10000
 btInterface.type = SimpleBroadcastInterface
 # Transmit speed of 2 Mbps = 250kBps
 btInterface.transmitSpeed = 250k
-btInterface.transmitRange = 100
+btInterface.transmitRange = 200
 
 # High speed, long range, interface for group 4
 highspeedInterface.type = SimpleBroadcastInterface
@@ -53,12 +53,12 @@ Scenario.nrofHostGroups = 1
 
 # Common settings for all groups
 Group.movementModel = ShortestPathMapBasedMovement
-Group.router = kMeansRouter
+Group.router = ProphetRouter
 Group.bufferSize = 15M
 Group.waitTime = 0,120
 # All nodes have the highSpeed interface
 Group.nrofInterfaces = 1
-Group.interface1 = highspeedInterface
+Group.interface1 = btInterface
 # Walking speeds
 Group.speed = 4.5, 6.5
 # Message TTL of 300 minutes (5 hours)
@@ -124,7 +124,7 @@ Report.report6 = InterContactTimesReport
 
 ## Default settings for some routers settings
 ProphetRouter.secondsInTimeUnit = 30
-#kMeansRouter.zerothreshold=0.75
+#kMeansRouter.zerothreshold=0.50
 SprayAndWaitRouter.nrofCopies = 6
 SprayAndWaitRouter.binaryMode = true
 
