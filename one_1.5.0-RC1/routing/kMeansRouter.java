@@ -368,6 +368,8 @@ public class kMeansRouter extends ActiveRouter{
     }
 
 //calculates euclidean distance between two nodes
+//index1- index of the first node
+//index2- index of the second node
 private double euclideanDist(double[][] featureMatrix,int rows,int columns,int index1,int index2)
 {
     double sum=0;
@@ -379,7 +381,8 @@ private double euclideanDist(double[][] featureMatrix,int rows,int columns,int i
     return sum;
 }
 
-//calculates euclidean distance of a node
+//calculates euclidean distance of a node from origin
+//index1- index of the node
 private double euclideanDist(double[][] featureMatrix,int rows,int columns,int index1)
 {
     double sum=0;
