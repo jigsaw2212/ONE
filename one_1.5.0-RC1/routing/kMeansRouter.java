@@ -49,8 +49,9 @@ public class kMeansRouter extends ActiveRouter{
    private static int nodeCount=-1; //to store the count of no of nodes
    private double zerothreshold; //to check how much of the encounter matrix has been filled
 
+   //constant for default value of zeroThreshold
    public static final double DEFAULT_ZEROTHRESHOLD=0.25;
-
+   //constant  for kmeans namespace
    public static final String kMeans_NS = "kMeansRouter";
 
    //if zerothreshold=0.25, it means 75% of the encounter matrix must be filled before we start the algorithm
