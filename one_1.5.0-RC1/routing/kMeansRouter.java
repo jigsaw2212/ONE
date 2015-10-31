@@ -391,6 +391,7 @@ private double euclideanDist(double[][] featureMatrix,int rows,int columns,int i
     return sum;
 }
 
+//to normalize the featureMatrix using mean normalization
 private void normalize(double[][] featureMatrix,int rows,int columns)
 {
     double sum,min,max,diff;
