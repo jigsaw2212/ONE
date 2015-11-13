@@ -62,6 +62,18 @@ public class kMeansRouter extends ActiveRouter{
     /** number of encounters of every node with every other node*/
     private static int[][] encounters;
 
+    /** identifier for the initial number of copies setting ({@value})*/
+    public static final String NROF_COPIES = "nrofCopies";
+    /** identifier for the binary-mode setting ({@value})*/
+    public static final String BINARY_MODE = "binaryMode";
+
+    /** Message property key */
+    public static final String MSG_COUNT_PROPERTY = kMeans_NS + "." +
+        "copies";
+
+    protected int initialNrofCopies;
+    protected boolean isBinary;
+
     /**
      * Constructor. Creates a new message router based on the settings in
      * the given Settings object.
@@ -78,6 +90,8 @@ public class kMeansRouter extends ActiveRouter{
             zerothreshold = DEFAULT_ZEROTHRESHOLD;
         }
 
+        initialNrofCopies = kMeansSettings.getInt(NROF_COPIES);
+        isBinary = kMeansSettings.getBoolean( BINARY_MODE);
     }
 
     /**
@@ -87,6 +101,8 @@ public class kMeansRouter extends ActiveRouter{
     protected kMeansRouter(kMeansRouter r) {
         super(r);
         this.zerothreshold=r.zerothreshold;
+        this.initialNrofCopies = r.initialNrofCopies;
+        this.isBinary = r.isBinary;
     }
 
      void checkStart()  {
@@ -111,6 +127,40 @@ public class kMeansRouter extends ActiveRouter{
 
     }   //end of checkStart
 
+    @Override
+    public int receiveMessage(Message m, DTNHost from) {
+        return super.receiveMessage(m, from);
+    }
+
+    @Override
+    public Message messageTransferred(String id, DTNHost from) {
+        Message msg = super.messageTransferred(id, from);
+        Integer nrofCopies = (Integer)msg.getProperty(MSG_COUNT_PROPERTY);
+
+        assert nrofCopies != null : "Not a SnW message: " + msg;
+
+        if (isBinary) {
+            /* in binary S'n'W the receiving node gets ceil(n/2) copies */
+            nrofCopies = (int)java.lang.Math.ceil(nrofCopies/2.0);
+        }
+        else {
+            /* in standard S'n'W the receiving node gets only single copy */
+            nrofCopies = 1;
+        }
+
+        msg.updateProperty(MSG_COUNT_PROPERTY, nrofCopies);
+        return msg;
+    }
+
+    @Override
+    public boolean createNewMessage(Message msg) {
+        makeRoomForNewMessage(msg.getSize());
+
+        msg.setTtl(this.msgTtl);
+        msg.addProperty(MSG_COUNT_PROPERTY, new Integer(initialNrofCopies));
+        addToMessages(msg, true);
+        return true;
+    }
 
     @Override
     public void changedConnection(Connection con) {
@@ -191,8 +241,8 @@ public class kMeansRouter extends ActiveRouter{
         //i.e. when the encounter matrix has no zero value
          if(start==1)
         {
-            countTotal++;
-            System.out.println(countTotal);
+   //         countTotal++;
+     //       System.out.println(countTotal);
             tryOtherMessages();
         }
 
@@ -206,7 +256,9 @@ public class kMeansRouter extends ActiveRouter{
         List<Tuple<Message, Connection>> messages =
             new ArrayList<Tuple<Message, Connection>>();
 
-        Collection<Message> msgCollection = getMessageCollection();
+        /* create a list of SAWMessages that have copies left to distribute */
+        @SuppressWarnings(value = "unchecked")
+        List<Message> msgCollection = sortByQueueMode(getMessagesWithCopiesLeft());
 
         //System.out.println("poop");
 
@@ -366,6 +418,55 @@ public class kMeansRouter extends ActiveRouter{
         // sort the message-connection tuples (i dont's see the need to sort:-Kunal)
         //Collections.sort(messages, new TupleComparator());
         return tryMessagesForConnected(messages);   // try to send messages
+    }
+
+/**
+     * Creates and returns a list of messages this router is currently
+     * carrying and still has copies left to distribute (nrof copies > 1).
+     * @return A list of messages that have copies left
+     */
+    protected List<Message> getMessagesWithCopiesLeft() {
+        List<Message> list = new ArrayList<Message>();
+
+        for (Message m : getMessageCollection()) {
+            Integer nrofCopies = (Integer)m.getProperty(MSG_COUNT_PROPERTY);
+            assert nrofCopies != null : "SnW message " + m + " didn't have " +
+                "nrof copies property!";
+            if (nrofCopies > 1) {
+                list.add(m);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * Called just before a transfer is finalized (by
+     * {@link ActiveRouter#update()}).
+     * Reduces the number of copies we have left for a message.
+     * In binary Spray and Wait, sending host is left with floor(n/2) copies,
+     * but in standard mode, nrof copies left is reduced by one.
+     */
+    @Override
+    protected void transferDone(Connection con) {
+        Integer nrofCopies;
+        String msgId = con.getMessage().getId();
+        /* get this router's copy of the message */
+        Message msg = getMessage(msgId);
+
+        if (msg == null) { // message has been dropped from the buffer after..
+            return; // ..start of transfer -> no need to reduce amount of copies
+        }
+
+        /* reduce the amount of copies left */
+        nrofCopies = (Integer)msg.getProperty(MSG_COUNT_PROPERTY);
+        if (isBinary) {
+            nrofCopies /= 2;
+        }
+        else {
+            nrofCopies--;
+        }
+        msg.updateProperty(MSG_COUNT_PROPERTY, nrofCopies);
     }
 
 //calculates euclidean distance between two nodes
