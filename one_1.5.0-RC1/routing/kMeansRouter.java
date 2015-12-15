@@ -230,7 +230,9 @@ public class kMeansRouter extends ActiveRouter{
         }
 
         // try messages that could be delivered to final recipient
+
         if (exchangeDeliverableMessages() != null) {
+      //      System.out.print("x");
             return;
         }
 
@@ -265,20 +267,33 @@ public class kMeansRouter extends ActiveRouter{
         for(Message m : msgCollection){
 
             DTNHost dest = m.getTo();
-            int noOfFeatures=2;
+            int noOfFeatures=4;
             double[][] featureMatrix=new double[getConnections().size()][noOfFeatures];
             int i=0;
 
-           // System.out.println("no. of connections="+getConnections().size());
+//           System.out.println("no. of connections="+getConnections().size());
+         //   System.out.println("poop");
+           // System.out.println("dest:: "+dest.getAddress());
             //to get the feature matrix of the neighbours.
             for (Connection con : getConnections()){
 
                 //DTNHost me = getHost();
                 DTNHost other = con.getOtherNode(getHost());
+             //   System.out.println("other:: "+other.getAddress());
+                if(other==dest){
+               //  System.out.print("x");
+                  //  System.out.println(m.getId());
+                   //System.out.println(getHost() +":::"+other.getAddress());
+                }
                 //kMeansRouter othRouter = (kMeansRouter)other.getRouter();
 
                 featureMatrix[i][0]=getEncounter(other,dest);
                 featureMatrix[i][1]=getDistFor(other,dest);
+                featureMatrix[i][2]=other.getBufferOccupancy();
+                featureMatrix[i][3]=msgSuccess[other.getAddress()];
+               // System.out.println(msgSuccess[other.getAddress()]);
+                //System.out.println(other.getPath());
+
                 i++;
             }
             //System.out.println("poop1");
