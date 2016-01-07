@@ -53,7 +53,7 @@ Scenario.nrofHostGroups = 6
 
 # Common settings for all groups
 Group.movementModel = ShortestPathMapBasedMovement
-Group.router = ProphetRouter
+Group.router = SprayAndWaitRouter
 Group.bufferSize = 10M
 Group.waitTime = 0, 120
 # All nodes have the bluetooth interface

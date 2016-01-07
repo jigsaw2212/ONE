@@ -268,7 +268,7 @@ public abstract class Report {
 	 * Returns the current simulation time from the SimClock
 	 * @return the current simulation time from the SimClock
 	 */
-	protected double getSimTime() {
+	public double getSimTime() {
 		return SimClock.getTime();
 	}
 	
@@ -276,7 +276,7 @@ public abstract class Report {
 	 * Returns true if the warm up period is still ongoing (simTime < warmup)
 	 * @return true if the warm up period is still ongoing, false if not
 	 */
-	protected boolean isWarmup() {
+	public boolean isWarmup() {
 		return this.warmupTime > SimClock.getTime();
 	}
 	

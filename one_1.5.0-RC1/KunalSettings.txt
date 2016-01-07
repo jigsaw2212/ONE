@@ -1,9 +1,10 @@
-#
+
+#kunal
 # ed_multi settings for the simulation
 #
 
 ## Scenario settings
-Scenario.name = KMeans_scenario
+Scenario.name = Kmeans_scenario
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 # 43200s == 12h
@@ -108,13 +109,13 @@ Report.nrofReports = 7
 # length of the warm up period (simulated seconds)
 Report.warmup = 1000
 # default directory of reports (can be overridden per Report with output setting)
-Report.reportDir = reports/KMeans_scenario
+Report.reportDir = reports/kmeans
 Report.granularity = 50
 
 # Report classes to load
 Report.report1 = MessageStatsReport
 Report.report2 = TotalEncountersReport
-Report.report3 = AdjacencyGraphvizReport
+Report.report3 = DeliveredMessagesReport
 Report.report4 = ContactTimesReport
 Report.report5 = DeliveredMessagesReport
 Report.report6 = TotalContactTimeReport

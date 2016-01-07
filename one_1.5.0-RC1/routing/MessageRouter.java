@@ -92,7 +92,7 @@ public abstract class MessageRouter {
 	/** Host where this router belongs to */
 	private DTNHost host;
 	/** size of the buffer */
-	private int bufferSize;
+	public int bufferSize;
 	/** TTL for all messages */
 	protected int msgTtl;
 	/** Queue mode for sending messages */

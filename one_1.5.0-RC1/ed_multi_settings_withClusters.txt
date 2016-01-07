@@ -3,11 +3,11 @@
 #
 
 ## Scenario settings
-Scenario.name = ed_multi_scenario
+Scenario.name = KMeans_scenario
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
 # 43200s == 12h
-Scenario.endTime = 100000
+Scenario.endTime = 10000
 
 
 ## Interface-specific settings:
@@ -53,7 +53,7 @@ Scenario.nrofHostGroups = 6
 
 # Common settings for all groups
 Group.movementModel = ShortestPathMapBasedMovement
-Group.router = EpidemicRouter
+Group.router = SprayAndWaitRouter
 Group.bufferSize = 15M
 Group.waitTime = 0, 120
 # All nodes have the bluetooth interface
@@ -118,7 +118,7 @@ Events.nrof = 1
 Events1.class = MessageEventGenerator
 # (following settings are specific for the MessageEventGenerator class)
 # Creation interval in seconds (one new message every 25 to 35 seconds)
-Events1.interval = 65,75
+Events1.interval = 25,35
 # Message sizes (500kB - 1MB)
 Events1.size = 500k,1M
 # range of message source/destination addresses
@@ -146,19 +146,31 @@ MapBasedMovement.mapFile4 = data/shops.wkt
 ## Reports - all report names have to be valid report classes
 
 # how many reports to load
-Report.nrofReports = 2
+Report.nrofReports = 5
 # length of the warm up period (simulated seconds)
 Report.warmup = 0
+
 # default directory of reports (can be overridden per Report with output setting)
-Report.reportDir = reports/edMulti
+Report.reportDir = reports/KMeans_scenario
 # Report classes to load
 Report.report1 = MessageStatsReport
 Report.report2 = TotalEncountersReport
+Report.report3 = AdjacencyGraphvizReport
+Report.report4 = InterContactTimesReport
+Report.report5 = DeliveredMessagesReport
+#Report.report6 = EnergyLevelReport
 
+
+ActiveRouter.deleteDelivered = true
+
+EnergyLevelReport.granularity = 100
 
 
 ## Default settings for some routers settings
 ProphetRouter.secondsInTimeUnit = 30
+kMeansRouter.nrofCopies = 6
+kMeansRouter.binaryMode = true
+
 SprayAndWaitRouter.nrofCopies = 6
 SprayAndWaitRouter.binaryMode = true
 
